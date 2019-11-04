@@ -1,4 +1,4 @@
-package com.smarthomecontroldemo;
+package com.smarthomecontroldemo.base;
 
 import androidx.appcompat.app.AppCompatActivity;
 

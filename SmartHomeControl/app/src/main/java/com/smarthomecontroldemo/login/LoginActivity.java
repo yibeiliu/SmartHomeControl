@@ -1,7 +1,5 @@
 package com.smarthomecontroldemo.login;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -10,7 +8,7 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton;
-import com.smarthomecontroldemo.BaseActivity;
+import com.smarthomecontroldemo.base.BaseActivity;
 import com.smarthomecontroldemo.MainActivity;
 import com.smarthomecontroldemo.R;
 import com.smarthomecontroldemo.Utils.SharePre;
