@@ -9,7 +9,7 @@ import android.widget.EditText;
 
 import com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton;
 import com.smarthomecontroldemo.base.BaseActivity;
-import com.smarthomecontroldemo.MainActivity;
+import com.smarthomecontroldemo.home.MainActivity;
 import com.smarthomecontroldemo.R;
 import com.smarthomecontroldemo.Utils.SharePre;
 
