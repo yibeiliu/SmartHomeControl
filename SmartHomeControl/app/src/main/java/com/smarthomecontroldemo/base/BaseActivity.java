@@ -1,13 +1,12 @@
 package com.smarthomecontroldemo.base;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
 
@@ -79,6 +78,4 @@ public class BaseActivity extends AppCompatActivity {
     protected enum DialogType {
         LOADING, SUCCESS, FAIL, INFO
     }
-
-
 }

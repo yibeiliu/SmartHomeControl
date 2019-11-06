@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".bluetooth.BtConnectActivity">
+
+    <include layout="@layout/item_toolbar" />
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/bt_connect_srl"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/bt_connect_rv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="10dp" />
+
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <com.qmuiteam.qmui.widget.QMUIEmptyView
+        android:id="@+id/bt_connect_empty_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/qmui_config_color_white"
+        android:fitsSystemWindows="true"
+        app:qmui_title_text="这里空空如也~" />
+</LinearLayout>

@@ -1,8 +1,7 @@
 package com.smarthomecontroldemo.login;
 
+import android.os.Handler;
 import android.text.TextUtils;
-
-import org.w3c.dom.Text;
 
 /**
  * @Author peiyi.liu
@@ -24,21 +23,16 @@ public class LoginModel {
     }
 
     public void doLogin(final String username,final String password,final onLoginStatusListener listener) {
-        new Thread(new Runnable() {
+        new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                try {
-                    Thread.sleep(1000);
-                    if (checkLoginInfo(username, password)) {
-                        listener.onSuccess();
-                    } else {
-                        listener.OnFailure("Your input a wrong user info!");
-                    }
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                if (checkLoginInfo(username, password)) {
+                    listener.onSuccess();
+                } else {
+                    listener.OnFailure("Your input a wrong user info!");
                 }
             }
-        }).start();
+        }, 1000);
     }
 
     private boolean checkLoginInfo(String username, String password) {

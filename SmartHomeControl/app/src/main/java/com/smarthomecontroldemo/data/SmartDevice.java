@@ -1,5 +1,7 @@
 package com.smarthomecontroldemo.data;
 
+import androidx.annotation.Nullable;
+
 /**
  * @Author peiyi.liu
  * @Date 11/4/2019 1:59 PM
@@ -42,5 +44,10 @@ public class SmartDevice extends HomeMultiItem {
     @Override
     public int getItemType() {
         return HomeMultiItem.DEVICE;
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        return super.equals(obj);
     }
 }

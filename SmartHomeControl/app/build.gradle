@@ -31,4 +31,8 @@ dependencies {
     implementation 'org.eclipse.paho:org.eclipse.paho.android.service:1.1.1'
 
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.47-androidx'
+    implementation 'com.google.code.gson:gson:2.8.6'
+    implementation "io.reactivex.rxjava2:rxjava:2.2.14"
+    implementation 'com.github.tbruyelle:rxpermissions:0.10.2'
+
 }

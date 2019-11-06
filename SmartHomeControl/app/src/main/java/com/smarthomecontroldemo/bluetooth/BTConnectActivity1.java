@@ -1,9 +1,5 @@
 package com.smarthomecontroldemo.bluetooth;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-
 import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothManager;
@@ -14,18 +10,16 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
-import android.util.Xml;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.smarthomecontroldemo.R;
 
-import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
-import static java.util.Objects.requireNonNull;
-
-public class BTConnectActivity extends AppCompatActivity {
+public class BTConnectActivity1 extends AppCompatActivity {
     private BluetoothAdapter bta = null;
     private BluetoothManager btm = null;
     private BluetoothLeScanner scanner = null;

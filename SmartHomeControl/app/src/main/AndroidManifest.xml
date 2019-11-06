@@ -18,21 +18,25 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".bluetooth.BtTestActivity">
+        <activity android:name=".bluetooth.BtConnectActivity"></activity>
+        <activity android:name=".bluetooth.BtTestActivity"></activity>
+        <activity android:name=".mqtt.TestMqttActivity" />
+        <activity android:name=".bluetooth.BTConnectActivity"></activity>
+        <activity android:name=".bluetooth.BTConnectActivity1"></activity>
 
-        </activity>
-        <activity android:name=".mqtt.TestMqttActivity"></activity>
-        <activity android:name=".bluetooth.BTConnectActivity">
 
-        </activity>
         <activity android:name=".base.BaseActivity" />
-        <activity android:name=".login.LoginActivity" />
-        <activity android:name=".home.MainActivity">
+        <activity android:name=".login.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".home.MainActivity"
+            android:launchMode="singleTask">
+
         </activity>
     </application>
 

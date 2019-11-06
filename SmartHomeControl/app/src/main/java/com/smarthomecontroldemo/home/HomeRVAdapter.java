@@ -128,11 +128,9 @@ public class HomeRVAdapter extends BaseMultiItemQuickAdapter<HomeMultiItem, Base
                 SmartDevice smartDevice = ((SmartDevice)homeMultiItem);
                 baseViewHolder.setText(R.id.item_homerv_device_name, smartDevice.getDeviceName());
                 baseViewHolder.setImageResource(R.id.item_homerv_device_icon, smartDevice.getIcon());
-//                baseViewHolder.addOnClickListener(R.id.item_homerv_device_cardview);
                 break;
             case HomeMultiItem.ADD_PAGE:
                 baseViewHolder.setImageResource(R.id.item_homerv_add_page_icon, R.drawable.add_device);
-//                baseViewHolder.addOnClickListener(R.id.item_homerv_add_page_cardview);
                 break;
             default:
                 break;
