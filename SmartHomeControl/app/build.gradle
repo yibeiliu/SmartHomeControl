@@ -1,6 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        release {
+            storeFile file('../smart_home.jks')
+            storePassword 'smart_home'
+            keyAlias = 'smart_home'
+            keyPassword 'smart_home'
+        }
+    }
     compileSdkVersion 28
     buildToolsVersion "29.0.1"
     defaultConfig {
@@ -13,6 +21,8 @@ android {
     }
     buildTypes {
         release {
+
+            signingConfig signingConfigs.release
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }

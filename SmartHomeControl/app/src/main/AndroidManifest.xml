@@ -18,13 +18,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".bluetooth.BtConnectActivity"></activity>
-        <activity android:name=".bluetooth.BtTestActivity"></activity>
+        <activity android:name=".login.RefindPwdActivity"></activity>
+        <activity android:name=".bluetooth.BtConnectActivity" />
+        <activity android:name=".bluetooth.BtTestActivity" />
         <activity android:name=".mqtt.TestMqttActivity" />
-        <activity android:name=".bluetooth.BTConnectActivity"></activity>
-        <activity android:name=".bluetooth.BTConnectActivity1"></activity>
-
-
+        <activity android:name=".bluetooth.BTConnectActivity" />
+        <activity android:name=".bluetooth.BTConnectActivity1" />
         <activity android:name=".base.BaseActivity" />
         <activity android:name=".login.LoginActivity">
             <intent-filter>
@@ -35,9 +34,7 @@
         </activity>
         <activity
             android:name=".home.MainActivity"
-            android:launchMode="singleTask">
-
-        </activity>
+            android:launchMode="singleTask"></activity>
     </application>
 
 </manifest>
