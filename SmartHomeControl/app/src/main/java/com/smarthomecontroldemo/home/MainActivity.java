@@ -46,6 +46,7 @@ public class MainActivity extends BaseActivity {
         } else {
             lists = new ArrayList<>();
         }
+        lists.add(new SmartDevice("name1","mac1",R.mipmap.ic_launcher));
         lists.add(new AddPageItem());
         homeRVAdapter = new HomeRVAdapter(lists);
         recyclerView.setAdapter(homeRVAdapter);
@@ -61,8 +62,6 @@ public class MainActivity extends BaseActivity {
                                 .addItems(items, new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        //todo 跳转扫描页
-//                                        Toast.makeText(view.getContext(), "你选择了 " + items[which], Toast.LENGTH_SHORT).show();
                                         dialog.dismiss();
                                         switch (which) {
                                             case 0:
@@ -83,6 +82,7 @@ public class MainActivity extends BaseActivity {
                     case HomeMultiItem.DEVICE:
                         SmartDevice smartDevice = (SmartDevice) multiItem;
                         Toast.makeText(MainActivity.this, "" + smartDevice.getDeviceName(), Toast.LENGTH_SHORT).show();
+                        //todo 进入不同控制界面
                         break;
                     default:
                         break;
