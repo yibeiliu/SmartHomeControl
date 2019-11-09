@@ -46,7 +46,6 @@ public class MainActivity extends BaseActivity {
         } else {
             lists = new ArrayList<>();
         }
-        lists.add(new SmartDevice("name1","mac1",R.mipmap.ic_launcher));
         lists.add(new AddPageItem());
         homeRVAdapter = new HomeRVAdapter(lists);
         recyclerView.setAdapter(homeRVAdapter);
@@ -102,6 +101,7 @@ public class MainActivity extends BaseActivity {
         } else {
             lists = new ArrayList<>();
         }
+        lists.add(new SmartDevice("name1", "mac1", R.mipmap.ic_launcher));
         lists.add(new AddPageItem());
         homeRVAdapter.setNewData(lists);
     }

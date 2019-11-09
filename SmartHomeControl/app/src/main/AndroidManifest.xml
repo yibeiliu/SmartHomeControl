@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.smarthomecontroldemo">
 
     <uses-permission android:name="android.permission.WAKE_LOCK" />
@@ -17,24 +18,28 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:ignore="GoogleAppIndexingWarning">
         <activity android:name=".login.RefindPwdActivity"></activity>
         <activity android:name=".bluetooth.BtConnectActivity" />
         <activity android:name=".bluetooth.BtTestActivity" />
-        <activity android:name=".mqtt.TestMqttActivity" />
-        <activity android:name=".bluetooth.BTConnectActivity" />
-        <activity android:name=".bluetooth.BTConnectActivity1" />
-        <activity android:name=".base.BaseActivity" />
-        <activity android:name=".login.LoginActivity">
+        <activity android:name=".mqtt.TestMqttActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".bluetooth.BTConnectActivity1" />
+        <activity android:name=".base.BaseActivity" />
+        <activity android:name=".login.LoginActivity">
+
+        </activity>
         <activity
             android:name=".home.MainActivity"
-            android:launchMode="singleTask"></activity>
+            android:launchMode="singleTask"/>
+        <!-- Mqtt Service -->
+        <service android:name="org.eclipse.paho.android.service.MqttService" />
     </application>
 
 </manifest>
