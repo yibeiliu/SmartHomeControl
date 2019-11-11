@@ -20,14 +20,15 @@
             android:layout_height="match_parent"
             android:padding="10dp" />
 
+        <com.qmuiteam.qmui.widget.QMUIEmptyView
+            android:id="@+id/bt_connect_empty_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/qmui_config_color_white"
+            android:fitsSystemWindows="true"
+            app:qmui_title_text="这里空空如也~" />
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-    <com.qmuiteam.qmui.widget.QMUIEmptyView
-        android:id="@+id/bt_connect_empty_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/qmui_config_color_white"
-        android:fitsSystemWindows="true"
-        app:qmui_title_text="这里空空如也~" />
+
 </LinearLayout>

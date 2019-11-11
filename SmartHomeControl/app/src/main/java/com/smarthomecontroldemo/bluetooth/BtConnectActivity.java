@@ -23,6 +23,7 @@ import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
 import com.smarthomecontroldemo.R;
 import com.smarthomecontroldemo.Utils.SharePre;
+import com.smarthomecontroldemo.Utils.StaticValues;
 import com.smarthomecontroldemo.base.BaseActivity;
 import com.smarthomecontroldemo.data.SmartDevice;
 import com.smarthomecontroldemo.data.UserAndDevice;
@@ -73,10 +74,10 @@ public class BtConnectActivity extends BaseActivity {
     private void addListAndNoticeRV(SmartDevice smartDevice) {
         recyclerviewAdapter.addData(smartDevice);
         if (recyclerviewAdapter.getData().isEmpty()) {
-            swipeRefreshLayout.setVisibility(View.GONE);
+            recyclerView.setVisibility(View.GONE);
             mEmptyView.show();
         } else {
-            swipeRefreshLayout.setVisibility(View.VISIBLE);
+            recyclerView.setVisibility(View.VISIBLE);
             mEmptyView.hide();
         }
     }
@@ -114,15 +115,21 @@ public class BtConnectActivity extends BaseActivity {
         deviceLists = new ArrayList<>();
         recyclerviewAdapter = new BtConnectListAdapter(deviceLists);
         if (deviceLists.isEmpty()) {
-            swipeRefreshLayout.setVisibility(View.GONE);
+            recyclerView.setVisibility(View.GONE);
             mEmptyView.show();
         }
         recyclerviewAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 final SmartDevice smartDevice = (SmartDevice) adapter.getItem(position);
+                assert smartDevice != null;
+                if(!isDeviceInThreeList(smartDevice)){
+                    //提示不支持当前设备
+                    showDialog(BtConnectActivity.this, DialogType.INFO, true,
+                            smartDevice.getDeviceName() + " 该设备不支持绑定", 1500);
+                    return;
+                }
 
-                //todo 已经绑定过了
                 final UserAndDevice oldUserAndDevice = SharePre.getUserAndDevices(getApplicationContext());
                 if (oldUserAndDevice != null) {
                     for (SmartDevice device : oldUserAndDevice.getLists()) {
@@ -169,6 +176,17 @@ public class BtConnectActivity extends BaseActivity {
             }
         });
         recyclerView.setAdapter(recyclerviewAdapter);
+    }
+
+    /**
+     * 检查欲绑定设备是否是指定的设备
+     * @param smartDevice
+     * @return
+     */
+    private boolean isDeviceInThreeList(SmartDevice smartDevice) {
+        return StaticValues.AIR_PURIFIER.equals(smartDevice.getDeviceName())
+                || StaticValues.HUMIDIFIER.equals(smartDevice.getDeviceName())
+                || StaticValues.WATER_PURIFIER.equals(smartDevice.getDeviceName());
     }
 
     private void startBtScan() {

@@ -20,25 +20,25 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".login.RefindPwdActivity"></activity>
+        <activity android:name=".control.AirPurifierActivity" />
+        <activity android:name=".control.HumidifierActivity" />
+        <activity android:name=".control.WaterPurifierActivity" />
+        <activity android:name=".login.RefindPwdActivity" />
         <activity android:name=".bluetooth.BtConnectActivity" />
         <activity android:name=".bluetooth.BtTestActivity" />
-        <activity android:name=".mqtt.TestMqttActivity">
+        <activity android:name=".mqtt.TestMqttActivity" />
+        <activity android:name=".bluetooth.BTConnectActivity1" />
+        <activity android:name=".base.BaseActivity" />
+        <activity android:name=".login.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".bluetooth.BTConnectActivity1" />
-        <activity android:name=".base.BaseActivity" />
-        <activity android:name=".login.LoginActivity">
-
-        </activity>
         <activity
             android:name=".home.MainActivity"
-            android:launchMode="singleTask"/>
-        <!-- Mqtt Service -->
+            android:launchMode="singleTask" /> <!-- Mqtt Service -->
         <service android:name="org.eclipse.paho.android.service.MqttService" />
     </application>
 

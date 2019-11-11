@@ -7,7 +7,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -17,8 +16,12 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 import com.smarthomecontroldemo.R;
 import com.smarthomecontroldemo.Utils.SharePre;
+import com.smarthomecontroldemo.Utils.StaticValues;
 import com.smarthomecontroldemo.base.BaseActivity;
 import com.smarthomecontroldemo.bluetooth.BtConnectActivity;
+import com.smarthomecontroldemo.control.AirPurifierActivity;
+import com.smarthomecontroldemo.control.HumidifierActivity;
+import com.smarthomecontroldemo.control.WaterPurifierActivity;
 import com.smarthomecontroldemo.data.AddPageItem;
 import com.smarthomecontroldemo.data.HomeMultiItem;
 import com.smarthomecontroldemo.data.SmartDevice;
@@ -39,14 +42,7 @@ public class MainActivity extends BaseActivity {
         configureToolbar();
         recyclerView = findViewById(R.id.main_rv);
         recyclerView.setLayoutManager(new GridLayoutManager(MainActivity.this, 2));
-        UserAndDevice userAndDevice = SharePre.getUserAndDevices(getApplicationContext());
-        List<HomeMultiItem> lists;
-        if (userAndDevice != null) {
-            lists = new ArrayList<HomeMultiItem>(userAndDevice.getLists());
-        } else {
-            lists = new ArrayList<>();
-        }
-        lists.add(new AddPageItem());
+        List<HomeMultiItem> lists = getDatabaseDevicesList();
         homeRVAdapter = new HomeRVAdapter(lists);
         recyclerView.setAdapter(homeRVAdapter);
         homeRVAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
@@ -80,20 +76,25 @@ public class MainActivity extends BaseActivity {
                         break;
                     case HomeMultiItem.DEVICE:
                         SmartDevice smartDevice = (SmartDevice) multiItem;
-                        Toast.makeText(MainActivity.this, "" + smartDevice.getDeviceName(), Toast.LENGTH_SHORT).show();
-                        //todo 进入不同控制界面
+                        if (StaticValues.WATER_PURIFIER.equals(smartDevice.getDeviceName())) {
+                            Intent intent = new Intent(MainActivity.this, WaterPurifierActivity.class);
+                            startActivity(intent);
+                        } else if (StaticValues.HUMIDIFIER.equals(smartDevice.getDeviceName())) {
+                            Intent intent = new Intent(MainActivity.this, HumidifierActivity.class);
+                            startActivity(intent);
+                        } else if (StaticValues.AIR_PURIFIER.equals(smartDevice.getDeviceName())) {
+                            Intent intent = new Intent(MainActivity.this, AirPurifierActivity.class);
+                            startActivity(intent);
+                        }
                         break;
                     default:
                         break;
                 }
-
             }
         });
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
+    private List<HomeMultiItem> getDatabaseDevicesList() {
         UserAndDevice userAndDevice = SharePre.getUserAndDevices(getApplicationContext());
         List<HomeMultiItem> lists;
         if (userAndDevice != null) {
@@ -101,9 +102,18 @@ public class MainActivity extends BaseActivity {
         } else {
             lists = new ArrayList<>();
         }
-        lists.add(new SmartDevice("name1", "mac1", R.mipmap.ic_launcher));
+        lists.add(new SmartDevice(StaticValues.WATER_PURIFIER, "mac1", R.mipmap.ic_launcher));
+        lists.add(new SmartDevice(StaticValues.HUMIDIFIER, "mac2", R.mipmap.ic_launcher));
+        lists.add(new SmartDevice(StaticValues.AIR_PURIFIER, "mac3", R.mipmap.ic_launcher));
+        //todo mock data for PENG
         lists.add(new AddPageItem());
-        homeRVAdapter.setNewData(lists);
+        return lists;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        homeRVAdapter.setNewData(getDatabaseDevicesList());
     }
 
     private void configureToolbar() {
