@@ -1,6 +1,9 @@
 package com.smarthomecontroldemo.mqtt;
 
+import android.content.Context;
 import android.util.Log;
+
+import com.smarthomecontroldemo.model.Constants;
 
 import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
@@ -14,26 +17,70 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 public class MqttSimple {
 
     private MqttAndroidClient mqttAndroidClient;
+    private static MqttSimple mqttSimple;
 
-    public MqttSimple(MqttAndroidClient mqttAndroidClient) {
-        this.mqttAndroidClient = mqttAndroidClient;
+    private static final String SPLIT = ",";
+    private static final String ENDING = "*HH";
+
+    public interface OnMqttRequestCallback {
+        void onSuccess(IMqttToken asyncActionToken);
+
+        void onFailure(IMqttToken asyncActionToken);
     }
 
-    public void test() {
+    public interface OnMqttConnectionCallback {
+        void onConnectionLost();
+
+        void onMessageReceived(String topic, MqttMessage message);
+
+        void onDeliverComplete(IMqttDeliveryToken token);
+    }
+
+    private MqttSimple(Context context) {
+        this.mqttAndroidClient = new MqttAndroidClient(context,Config.serverUri, Config.clientId);
+    }
+
+    public static MqttSimple getInstance(Context context) {
+        if (mqttSimple == null) {
+            synchronized (MqttSimple.class) {
+                if (mqttSimple == null) {
+                    mqttSimple = new MqttSimple(context);
+                }
+            }
+        }
+
+        return mqttSimple;
+    }
+
+    public void unregisterResources() {
+        mqttAndroidClient.unregisterResources();
+    }
+
+    public void connect(final OnMqttConnectionCallback callback) {
         mqttAndroidClient.setCallback(new MqttCallback() {
             @Override
             public void connectionLost(Throwable cause) {
                 Log.e("lpy", "connectionLost", cause);
+                if (callback != null) {
+                    callback.onConnectionLost();
+                }
             }
 
             @Override
             public void messageArrived(String topic, MqttMessage message) throws Exception {
                 String body = new String(message.getPayload());
                 Log.w("lpy", "messageArrived " + body);
+
+                if (callback != null) {
+                    callback.onMessageReceived(topic, message);
+                }
             }
 
             @Override
             public void deliveryComplete(IMqttDeliveryToken token) {
+                if (callback != null) {
+                    callback.onDeliverComplete(token);
+                }
             }
         });
 
@@ -65,7 +112,7 @@ public class MqttSimple {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
                     Log.w("lpy", "connect onSuccess");
-                    subscribeToTopic();
+                    subscribeToTopic(null);
                 }
 
                 @Override
@@ -78,63 +125,66 @@ public class MqttSimple {
         }
     }
 
-    public void subscribeToTopic() {
+    public void subscribeToTopic(final OnMqttRequestCallback callback) {
         try {
-            final String[] topicFilter = {Config.topic1, Config.topic2, Config.topic3, Config.topic4};
+            final String[] topicFilter = {Config.TOPIC_SEND, Config.TOPIC_RECEIVE};
             final int[] qos = {1, 1, 1, 1};
             mqttAndroidClient.subscribe(topicFilter, qos, null, new IMqttActionListener() {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
-                    Log.w("lpy", "subscribe success");
-                    publishMessage();
+                    if (callback != null) {
+                        callback.onSuccess(asyncActionToken);
+                    }
                 }
 
                 @Override
                 public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
-                    Log.e("lpy", "subscribe failed", exception);
+                    if (callback != null) {
+                        callback.onFailure(asyncActionToken);
+                    }
                 }
             });
-//==========================================================================
-//            final String[] topicFilter = {Config.topic};
-//            final int[] qos = {1};
-//            mqttAndroidClient.subscribe(topicFilter, qos, null, new IMqttActionListener() {
-//                @Override
-//                public void onSuccess(IMqttToken asyncActionToken) {
-//                    Log.w("lpy", "subscribe success");
-//                    publishMessage();
-//                }
-//
-//                @Override
-//                public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
-//                    Log.e("lpy", "subscribe failed", exception);
-//                }
-//            });
 
         } catch (MqttException ex) {
-            Log.e("lpy", "subscribe exception", ex);
+            ex.printStackTrace();
         }
     }
 
-
-    public void publishMessage() {
+    public void publishMessage(final String request) {
         try {
             MqttMessage message = new MqttMessage();
-            final String msg = "yibeiliu is awesome!";
-            message.setPayload(msg.getBytes());
-            mqttAndroidClient.publish(Config.topic1, message, null, new IMqttActionListener() {
+            message.setPayload(request.getBytes());
+            mqttAndroidClient.publish(Config.TOPIC_SEND, message, null, new IMqttActionListener() {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
-                    Log.w("lpy", "publish success:" + msg);
+
                 }
 
                 @Override
                 public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
-                    Log.w("lpy", "publish failed:" + msg);
+
                 }
             });
         } catch (MqttException e) {
-            Log.e("lpy", "publish exception", e);
+            e.printStackTrace();
         }
     }
 
+    public void sendRequest(int requestType, int deviceType, int protocolType, int data) {
+        String request = buildRequest(requestType, deviceType, protocolType, data);
+        mqttSimple.publishMessage(request);
+    }
+
+    private String buildRequest(int requestType, int deviceType, int protocolType, int data) {
+        StringBuilder stringBuilder = new StringBuilder();
+
+        stringBuilder.append(requestType == 0 ? Constants.HEADER_ONE : Constants.HEADER_ALL)
+                .append(deviceType).append(SPLIT)
+                .append(protocolType).append(SPLIT)
+                .append(data).append(SPLIT)
+                .append(1).append(SPLIT)
+                .append(ENDING);
+
+        return stringBuilder.toString();
+    }
 }

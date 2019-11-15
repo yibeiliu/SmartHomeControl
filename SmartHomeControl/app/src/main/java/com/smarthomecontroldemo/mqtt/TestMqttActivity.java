@@ -2,28 +2,25 @@ package com.smarthomecontroldemo.mqtt;
 
 import android.os.Bundle;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.smarthomecontroldemo.R;
 
-import org.eclipse.paho.android.service.MqttAndroidClient;
+import androidx.appcompat.app.AppCompatActivity;
 
 public class TestMqttActivity extends AppCompatActivity {
 
-    private MqttAndroidClient mqttAndroidClient;
+    private MqttSimple mqttSimple;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test_mqtt);
 
-        mqttAndroidClient = new MqttAndroidClient(getApplicationContext(), Config.serverUri, Config.clientId);
-        MqttSimple mqttSimple = new MqttSimple(mqttAndroidClient);
-        mqttSimple.test();
+        mqttSimple = MqttSimple.getInstance(getApplicationContext());
+        mqttSimple.connect(null);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mqttAndroidClient.unregisterResources();
+        mqttSimple.unregisterResources();
     }
 }
