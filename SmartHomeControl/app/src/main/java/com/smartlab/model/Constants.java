@@ -5,10 +5,13 @@ public class Constants {
 
     public static final String HEADER_ONE = "#SMARTEMAL";
 
+    public static final String SPLIT = ",";
+    public static final String ENDING = "*HH";
 
     public static final int DEVICE_WATER_PURIFIER = 1;
     public static final int DEVICE_AIR_CLEANER = 2;
     public static final int DEVICE_MOISTURIZER = 3;
+
 
     public enum DEVICE_TYPE {
         WATER_PURIFIER(1),

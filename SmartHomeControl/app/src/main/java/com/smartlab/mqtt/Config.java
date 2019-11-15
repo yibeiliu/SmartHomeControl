@@ -12,6 +12,6 @@ public class Config {
     public static final String topic3 = "SmartHome-WaterPurifier-Update/03/";
     public static final String topic4 = "SmartHome-WaterPurifier-Update/04/";
 
-    public static final String TOPIC_SEND = "SmartHome-WaterPurifier-Update/SmartPhone";
-    public static final String TOPIC_RECEIVE = "SmartHome-WaterPurifier-Update/HardWare";
+    public static final String TOPIC_SEND = "SmartHome-WaterPurifier-Update/HardWare";
+    public static final String TOPIC_RECEIVE = "SmartHome-WaterPurifier-Update/SmartPhone";
 }

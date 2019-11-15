@@ -14,72 +14,85 @@ import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
-public class MqttSimple {
+
+public class MqttManager {
+    public static final String TAG = "mqtt";
 
     private MqttAndroidClient mqttAndroidClient;
-    private static MqttSimple mqttSimple;
+    private static MqttManager mqttManager;
+    private OnMqttActionListener listener;
 
-    private static final String SPLIT = ",";
-    private static final String ENDING = "*HH";
 
-    public interface OnMqttRequestCallback {
-        void onSuccess(IMqttToken asyncActionToken);
+//    public interface OnMqttRequestCallback {
+//        void onSuccess(IMqttToken asyncActionToken);
+//
+//        void onFailure(IMqttToken asyncActionToken);
+//    }
+//
+//    public interface OnMqttConnectionCallback {
+//        void onConnectionLost();
+//
+//        void onMessageReceived(String topic, MqttMessage message);
+//
+//        void onDeliverComplete(IMqttDeliveryToken token);
+//    }
 
-        void onFailure(IMqttToken asyncActionToken);
+    public interface OnMqttActionListener {
+        void onSubscribeSuccess();
+
+        void onMessageReceived(String msg);
+
+        void onFail(ErrorCode errorCode);
+
+        void onPublishSuccess();
     }
 
-    public interface OnMqttConnectionCallback {
-        void onConnectionLost();
-
-        void onMessageReceived(String topic, MqttMessage message);
-
-        void onDeliverComplete(IMqttDeliveryToken token);
+    private MqttManager(Context context) {
+        this.mqttAndroidClient = new MqttAndroidClient(context, Config.serverUri, Config.clientId);
     }
 
-    private MqttSimple(Context context) {
-        this.mqttAndroidClient = new MqttAndroidClient(context,Config.serverUri, Config.clientId);
-    }
-
-    public static MqttSimple getInstance(Context context) {
-        if (mqttSimple == null) {
-            synchronized (MqttSimple.class) {
-                if (mqttSimple == null) {
-                    mqttSimple = new MqttSimple(context);
+    public static MqttManager getInstance(Context context) {
+        if (mqttManager == null) {
+            synchronized (MqttManager.class) {
+                if (mqttManager == null) {
+                    mqttManager = new MqttManager(context);
                 }
             }
         }
 
-        return mqttSimple;
+        return mqttManager;
     }
 
-    public void unregisterResources() {
+    public void unConnect() {
         mqttAndroidClient.unregisterResources();
     }
 
-    public void connect(final OnMqttConnectionCallback callback) {
+    public void connect(final OnMqttActionListener listener) {
+        this.listener = listener;
         mqttAndroidClient.setCallback(new MqttCallback() {
             @Override
             public void connectionLost(Throwable cause) {
-                Log.e("lpy", "connectionLost", cause);
-                if (callback != null) {
-                    callback.onConnectionLost();
+                Log.e(TAG, "connectionLost", cause);
+                if (listener != null) {
+                    listener.onFail(ErrorCode.CONNECT_FAIL);
                 }
             }
 
             @Override
             public void messageArrived(String topic, MqttMessage message) throws Exception {
                 String body = new String(message.getPayload());
-                Log.w("lpy", "messageArrived " + body);
+                Log.w(TAG, "messageArrived " + body);
 
-                if (callback != null) {
-                    callback.onMessageReceived(topic, message);
+                if (listener != null) {
+                    listener.onMessageReceived(body);
                 }
             }
 
             @Override
             public void deliveryComplete(IMqttDeliveryToken token) {
-                if (callback != null) {
-                    callback.onDeliverComplete(token);
+                Log.d(TAG, "deliveryComplete");
+                if (listener != null) {
+                    listener.onFail(ErrorCode.CONNECT_FAIL);
                 }
             }
         });
@@ -104,44 +117,44 @@ public class MqttSimple {
              *  mqttConnectOptions.setPassword("RW|xxx");
              */
         } catch (Exception e) {
-            Log.e("lpy", "setPassword", e);
+            Log.e(TAG, "Exception", e);
         }
 
         try {
             mqttAndroidClient.connect(mqttConnectOptions, null, new IMqttActionListener() {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
-                    Log.w("lpy", "connect onSuccess");
-                    subscribeToTopic(null);
+                    Log.w(TAG, "connect onSuccess");
+                    subscribeToTopic();
                 }
 
                 @Override
                 public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
-                    Log.e("lpy", "connect onFailure", exception);
+                    Log.e(TAG, "connect onFailure", exception);
+                    listener.onFail(ErrorCode.CONNECT_FAIL);
                 }
             });
         } catch (MqttException e) {
-            Log.e("lpy", "exception", e);
+            Log.e(TAG, "exception", e);
         }
     }
 
-    public void subscribeToTopic(final OnMqttRequestCallback callback) {
+    public void subscribeToTopic() {
+        if (listener == null) {
+            throw new IllegalArgumentException("The listener is null, set the listener first please.");
+        }
         try {
-            final String[] topicFilter = {Config.TOPIC_SEND, Config.TOPIC_RECEIVE};
-            final int[] qos = {1, 1, 1, 1};
+            final String[] topicFilter = {Config.TOPIC_RECEIVE};
+            final int[] qos = {0};
             mqttAndroidClient.subscribe(topicFilter, qos, null, new IMqttActionListener() {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
-                    if (callback != null) {
-                        callback.onSuccess(asyncActionToken);
-                    }
+                    listener.onSubscribeSuccess();
                 }
 
                 @Override
                 public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
-                    if (callback != null) {
-                        callback.onFailure(asyncActionToken);
-                    }
+                    listener.onFail(ErrorCode.CONNECT_FAIL);
                 }
             });
 
@@ -150,19 +163,20 @@ public class MqttSimple {
         }
     }
 
-    public void publishMessage(final String request) {
+    private void publishMessage(final String request) {
         try {
             MqttMessage message = new MqttMessage();
             message.setPayload(request.getBytes());
             mqttAndroidClient.publish(Config.TOPIC_SEND, message, null, new IMqttActionListener() {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
+                    listener.onPublishSuccess();
 
                 }
 
                 @Override
                 public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
-
+                    listener.onFail(ErrorCode.SEND_FAIL);
                 }
             });
         } catch (MqttException e) {
@@ -172,18 +186,18 @@ public class MqttSimple {
 
     public void sendRequest(int requestType, int deviceType, int protocolType, int data) {
         String request = buildRequest(requestType, deviceType, protocolType, data);
-        mqttSimple.publishMessage(request);
+        mqttManager.publishMessage(request);
     }
 
     private String buildRequest(int requestType, int deviceType, int protocolType, int data) {
         StringBuilder stringBuilder = new StringBuilder();
 
         stringBuilder.append(requestType == 0 ? Constants.HEADER_ONE : Constants.HEADER_ALL)
-                .append(deviceType).append(SPLIT)
-                .append(protocolType).append(SPLIT)
-                .append(data).append(SPLIT)
-                .append(1).append(SPLIT)
-                .append(ENDING);
+                .append(deviceType).append(Constants.SPLIT)
+                .append(protocolType).append(Constants.SPLIT)
+                .append(data).append(Constants.SPLIT)
+                .append(1).append(Constants.SPLIT)
+                .append(Constants.ENDING);
 
         return stringBuilder.toString();
     }
