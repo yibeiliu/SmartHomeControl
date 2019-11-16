@@ -8,6 +8,8 @@ import android.widget.Toast;
 
 import com.smartlab.R;
 import com.smartlab.data.mqtt.ProtocolData;
+import com.smartlab.data.mqtt.ProtocolDeviceStatus;
+import com.smartlab.model.Constants;
 import com.smartlab.mqtt.BaseMqttActivity;
 import com.smartlab.mqtt.ErrorCode;
 import com.smartlab.uicomponent.CXToggleButton;
@@ -29,7 +31,7 @@ public class AirPurifierActivity extends BaseMqttActivity {
     private CXToggleButton tbMaintainButton;
 
     private static final String POWER_TAG = "POWER_TAG";
-    private static final String FIlTER_TAG = "FITER_TAG";
+    private static final String FIlTER_TAG = "FIlTER_TAG";
     private static final String MAINTAIN_TAG = "MAINTAIN_TAG";
 
     private CXToggleButton.OnToggleClickListener listener = new CXToggleButton.OnToggleClickListener() {
@@ -60,15 +62,18 @@ public class AirPurifierActivity extends BaseMqttActivity {
         llPowerState = findViewById(R.id.llPowerState);
         tvPowerText = llPowerState.findViewById(R.id.tvContent);
         tbPowerButton = llPowerState.findViewById(R.id.toggleButton);
-        tbPowerButton.setTag("Power");
+        tbPowerButton.setTag(POWER_TAG);
+        tbPowerButton.setOnToggleClickListener(listener);
 
         llFilterState = findViewById(R.id.llFilterCore);
         tvFilterText = llFilterState.findViewById(R.id.tvContent);
         tbFilterButton = llFilterState.findViewById(R.id.toggleButton);
+        tbFilterButton.setTag(FIlTER_TAG);
 
         llMaintain = findViewById(R.id.llMaintain);
         tvMaintainText = llMaintain.findViewById(R.id.tvContent);
         tbMaintainButton = llMaintain.findViewById(R.id.toggleButton);
+        tbFilterButton.setTag(MAINTAIN_TAG);
 
         tvPowerText.setText("开机状态");
         tvFilterText.setText("滤芯状态");
@@ -83,7 +88,19 @@ public class AirPurifierActivity extends BaseMqttActivity {
 
     @Override
     protected void notifyMessageReceived(ProtocolData protocolData) {
-        Toast.makeText(this, "消息成功", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "收到消息", Toast.LENGTH_SHORT).show();
+
+        if (protocolData.getDeviceType() == Constants.DEVICE_TYPE.AIR_CLEANER.value()) {
+
+            if (protocolData.getProtocolDeviceStatuses().get(0).getProtocolType() == Constants.PROTOCOL_TYPE.POWER_STATE.value()) {
+                ProtocolDeviceStatus protocolDeviceStatus = protocolData.getProtocolDeviceStatuses().get(0);
+                if ("1".equals(protocolDeviceStatus.getProtocolContent())) {
+                    tbPowerButton.setToggleButtonState(true);
+                } else {
+                    tbPowerButton.setToggleButtonState(false);
+                }
+            }
+        }
     }
 
     @Override
@@ -93,6 +110,6 @@ public class AirPurifierActivity extends BaseMqttActivity {
 
     @Override
     protected int currentDeviceType() {
-        return 0;
+        return Constants.DEVICE_TYPE.AIR_CLEANER.value();
     }
 }

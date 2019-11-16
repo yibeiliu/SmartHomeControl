@@ -54,6 +54,10 @@ class CXToggleButton : AppCompatCheckBox {
         })
     }
 
+    fun setToggleButtonState(state : Boolean) {
+        isChecked = state
+    }
+
     interface OnToggleClickListener {
         fun onToggleClick(view: View?)
     }

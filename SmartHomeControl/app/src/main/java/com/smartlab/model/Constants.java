@@ -20,6 +20,10 @@ public class Constants {
 
         int value;
 
+        public int value() {
+            return value;
+        }
+
         DEVICE_TYPE(int value) {
             this.value = value;
         }

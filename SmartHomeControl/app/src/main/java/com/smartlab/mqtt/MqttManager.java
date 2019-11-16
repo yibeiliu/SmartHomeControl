@@ -21,21 +21,7 @@ public class MqttManager {
     private MqttAndroidClient mqttAndroidClient;
     private static MqttManager mqttManager;
     private OnMqttActionListener listener;
-
-
-//    public interface OnMqttRequestCallback {
-//        void onSuccess(IMqttToken asyncActionToken);
-//
-//        void onFailure(IMqttToken asyncActionToken);
-//    }
-//
-//    public interface OnMqttConnectionCallback {
-//        void onConnectionLost();
-//
-//        void onMessageReceived(String topic, MqttMessage message);
-//
-//        void onDeliverComplete(IMqttDeliveryToken token);
-//    }
+    private Context context;
 
     public interface OnMqttActionListener {
         void onSubscribeSuccess();
@@ -49,6 +35,7 @@ public class MqttManager {
 
     private MqttManager(Context context) {
         this.mqttAndroidClient = new MqttAndroidClient(context, Config.serverUri, Config.clientId);
+        this.context = context;
     }
 
     public static MqttManager getInstance(Context context) {
@@ -91,9 +78,6 @@ public class MqttManager {
             @Override
             public void deliveryComplete(IMqttDeliveryToken token) {
                 Log.d(TAG, "deliveryComplete");
-                if (listener != null) {
-                    listener.onFail(ErrorCode.CONNECT_FAIL);
-                }
             }
         });
 
@@ -121,6 +105,7 @@ public class MqttManager {
         }
 
         try {
+            mqttAndroidClient.registerResources(context);
             mqttAndroidClient.connect(mqttConnectOptions, null, new IMqttActionListener() {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
