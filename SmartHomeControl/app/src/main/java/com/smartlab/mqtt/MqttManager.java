@@ -155,12 +155,14 @@ public class MqttManager {
             mqttAndroidClient.publish(Config.TOPIC_SEND, message, null, new IMqttActionListener() {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
+                    Log.e(TAG, "publishMessage onSuccess");
                     listener.onPublishSuccess();
 
                 }
 
                 @Override
                 public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+                    Log.e(TAG, "publishMessage onFailure");
                     listener.onFail(ErrorCode.SEND_FAIL);
                 }
             });

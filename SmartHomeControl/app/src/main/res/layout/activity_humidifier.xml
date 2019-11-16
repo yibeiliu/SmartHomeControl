@@ -6,4 +6,97 @@
     android:layout_height="match_parent"
     tools:context=".control.HumidifierActivity">
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/humidifier_guide_left"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="16dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/humidifier_guide_right"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="16dp" />
+
+    <include
+        android:id="@+id/humidifier_power_state"
+        layout="@layout/item_state_layout"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/humidifier_control_ll"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="@+id/humidifier_guide_right"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toStartOf="@+id/humidifier_guide_left"
+        app:layout_constraintTop_toBottomOf="@+id/humidifier_power_state"
+        tools:visibility="visible">
+
+        <TextView
+            android:id="@+id/humidifier_air_level_hint_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="风量"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="parent" />
+
+        <com.sevenheaven.segmentcontrol.SegmentControl
+            android:id="@+id/humidifier_air_level_sc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:textSize="18sp"
+            app:block_direction="horizon"
+            app:boundWidth="2dp"
+            app:cornerRadius="2dp"
+            app:horizonGap="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/humidifier_air_level_hint_tv"
+            app:normalColor="#FFFFFF"
+            app:selectedColor="#32ADFF"
+            app:separatorWidth="1dp"
+            app:texts="1|2|3|4|5|6|7|8|9|10"
+            app:verticalGap="10dp" />
+
+        <TextView
+            android:id="@+id/humidifier_air_direction_hint_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="风向"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@+id/humidifier_air_level_sc" />
+
+        <com.sevenheaven.segmentcontrol.SegmentControl
+            android:id="@+id/humidifier_air_direction_sc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:textSize="18sp"
+            app:block_direction="horizon"
+            app:boundWidth="2dp"
+            app:cornerRadius="2dp"
+            app:horizonGap="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/humidifier_air_direction_hint_tv"
+            app:normalColor="#FFFFFF"
+            app:selectedColor="#32ADFF"
+            app:separatorWidth="1dp"
+            app:texts="固定风向|左右风向"
+            app:verticalGap="10dp" />
+
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

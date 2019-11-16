@@ -36,4 +36,5 @@ public class TestMqttActivity extends BaseMqttActivity {
     protected int currentDeviceType() {
         return Constants.DEVICE_WATER_PURIFIER;
     }
+
 }

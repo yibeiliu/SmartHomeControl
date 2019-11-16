@@ -58,6 +58,7 @@ public class BaseActivity extends AppCompatActivity {
                 break;
         }
         dialog = builder.create();
+        dialog.setCancelable(false);
         dialog.show();
         if (dismissTimeMills > 0) {
             dialogHandler.postDelayed(new Runnable() {

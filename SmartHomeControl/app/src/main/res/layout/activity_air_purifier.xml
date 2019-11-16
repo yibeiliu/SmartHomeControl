@@ -1,24 +1,157 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical"
-              tools:context=".control.AirPurifierActivity">
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".control.AirPurifierActivity">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/air_purifier_guide_left"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="16dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/air_purifier_guide_right"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="16dp" />
 
     <include
         android:id="@+id/llPowerState"
-        layout="@layout/item_state_layout">
-    </include>
+        layout="@layout/item_state_layout"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <include
-        android:id="@+id/llFilterCore"
-        layout="@layout/item_state_layout">
-    </include>
+    <LinearLayout
+        android:id="@+id/air_purifier_control_ll"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="@+id/air_purifier_guide_right"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toStartOf="@+id/air_purifier_guide_left"
+        app:layout_constraintTop_toBottomOf="@+id/llPowerState"
+        tools:visibility="visible">
 
-    <include
-        android:id="@+id/llMaintain"
-        layout="@layout/item_state_layout">
-    </include>
+        <TextView
+            android:id="@+id/air_purifier_time_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            tools:text="23:23:23" />
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/air_purifier_air_level_hint_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="风量"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/air_purifier_time_tv" />
+
+        <com.sevenheaven.segmentcontrol.SegmentControl
+            android:id="@+id/air_purifier_air_level_sc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:textSize="18sp"
+            app:block_direction="horizon"
+            app:boundWidth="2dp"
+            app:cornerRadius="2dp"
+            app:horizonGap="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/air_purifier_air_level_hint_tv"
+            app:normalColor="#FFFFFF"
+            app:selectedColor="#32ADFF"
+            app:separatorWidth="1dp"
+            app:texts="1|2|3|4|5|6|7|8|9|10"
+            app:verticalGap="10dp" />
+
+        <TextView
+            android:id="@+id/air_purifier_air_direction_hint_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="风向"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@+id/air_purifier_air_level_sc" />
+
+        <com.sevenheaven.segmentcontrol.SegmentControl
+            android:id="@+id/air_purifier_air_direction_sc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:textSize="18sp"
+            app:block_direction="horizon"
+            app:boundWidth="2dp"
+            app:cornerRadius="2dp"
+            app:horizonGap="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/air_purifier_air_direction_hint_tv"
+            app:normalColor="#FFFFFF"
+            app:selectedColor="#32ADFF"
+            app:separatorWidth="1dp"
+            app:texts="固定风向|左右风向"
+            app:verticalGap="10dp" />
+
+        <TextView
+            android:id="@+id/air_purifier_air_temperature_hint_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="温度"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/air_purifier_air_direction_sc" />
+
+        <TextView
+            android:id="@+id/air_purifier_air_temperature_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/air_purifier_air_temperature_hint_tv"
+            tools:text="50度" />
+
+        <include
+            android:id="@+id/llFilterCore"
+            layout="@layout/item_state_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/air_purifier_air_temperature_tv" />
+
+        <include
+            android:id="@+id/llMaintain"
+            layout="@layout/item_state_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/llFilterCore" />
+
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

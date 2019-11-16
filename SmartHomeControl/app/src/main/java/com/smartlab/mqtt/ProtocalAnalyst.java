@@ -41,4 +41,9 @@ public class ProtocalAnalyst {
         }
         return protocolData;
     }
+
+    public static String formatTime(String protocolContent) {
+        //todo
+        return protocolContent;
+    }
 }
