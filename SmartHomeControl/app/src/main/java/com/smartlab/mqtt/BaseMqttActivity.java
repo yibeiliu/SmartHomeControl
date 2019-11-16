@@ -2,11 +2,11 @@ package com.smartlab.mqtt;
 
 import android.os.Bundle;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
 import com.smartlab.data.mqtt.ProtocolData;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public abstract class BaseMqttActivity extends AppCompatActivity {
     private MqttManager mqttManager;
