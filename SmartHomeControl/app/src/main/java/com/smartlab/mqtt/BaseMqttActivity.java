@@ -12,24 +12,36 @@ import com.smartlab.data.mqtt.ProtocolData;
 import com.smartlab.data.mqtt.ProtocolDeviceStatus;
 import com.smartlab.model.Constants;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public abstract class BaseMqttActivity extends BaseActivity {
     private static final int HANDLER_MSG_WAIT = 1000;
-    private static final int OVER_TIME_THRESHOLD = 200000;//todo
+    private static final int OVER_TIME_THRESHOLD = 2000;//todo
 
     private MqttManager mqttManager;
     private MqttManager.OnMqttActionListener mqttActionListener;
     private int currentWaitMsgProtocolType = -1;
     private boolean isShowLinkingDialog = false;
 
+    @SuppressLint("UseSparseArrays")
+    protected Map<Integer, Integer> currentDeviceStatusMap = new HashMap<>();
+
+
     @SuppressLint("HandlerLeak")
     private Handler overTimeHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            //消息超时
-            currentWaitMsgProtocolType = -1;
             dismissDialog();
-            showDialog(BaseMqttActivity.this, DialogType.FAIL, true, "消息发送超时", 1500);
+            if (currentWaitMsgProtocolType == Constants.PROTOCOL_TYPE.WHOLSE_STATE_INQUIRY.value()) {
+                showRetryConnectDialog();
+            } else {
+                notifyMsgTimeOut(currentWaitMsgProtocolType);
+                //消息超时
+                showDialog(BaseMqttActivity.this, DialogType.FAIL, true, "消息发送超时", 1500);
+            }
+            currentWaitMsgProtocolType = -1;
         }
     };
 
@@ -52,8 +64,21 @@ public abstract class BaseMqttActivity extends BaseActivity {
                 if (protocolData == null) {
                     return;
                 }
+
+                for (ProtocolDeviceStatus item : protocolData.getProtocolDeviceStatuses()) {
+                    if (item.getProtocolType() == Constants.PROTOCOL_TYPE.MALFUNCTION.value()) {
+                        currentWaitMsgProtocolType = -1;
+                        overTimeHandler.removeCallbacksAndMessages(null);
+                        dismissDialog();
+                        showMalfunctionDialog();
+                        break;
+                    }
+                }
+
                 if (isShowLinkingDialog && protocolData.getHeader().equals(Constants.HEADER_ALL)) {
                     isShowLinkingDialog = false;
+                    currentWaitMsgProtocolType = -1;
+                    overTimeHandler.removeCallbacksAndMessages(null);
                     dismissDialog();
                 }
 
@@ -96,6 +121,22 @@ public abstract class BaseMqttActivity extends BaseActivity {
         mqttManager.connect(mqttActionListener);
     }
 
+    private void showMalfunctionDialog() {
+        new QMUIDialog.MessageDialogBuilder(this)
+                .setTitle("故障")
+                .setMessage("设备出现故障，请查看设备")
+                .addAction(0, "退出", QMUIDialogAction.ACTION_PROP_NEGATIVE, new QMUIDialogAction.ActionListener() {
+                    @Override
+                    public void onClick(QMUIDialog dialog, int index) {
+                        dialog.dismiss();
+                        finish();
+                    }
+                })
+                .setCancelable(false)
+                .setCanceledOnTouchOutside(false)
+                .create(com.qmuiteam.qmui.R.style.QMUI_Dialog).show();
+    }
+
 
     private void showRetryConnectDialog() {
         new QMUIDialog.MessageDialogBuilder(this)
@@ -108,11 +149,15 @@ public abstract class BaseMqttActivity extends BaseActivity {
                         finish();
                     }
                 })
+                .setCancelable(false)
+                .setCanceledOnTouchOutside(false)
                 .addAction("重试", new QMUIDialogAction.ActionListener() {
                     @Override
                     public void onClick(QMUIDialog dialog, int index) {
                         dialog.dismiss();
                         mqttManager.connect(mqttActionListener);
+                        sendRequest(1, currentDeviceType(),
+                                Constants.PROTOCOL_TYPE.WHOLSE_STATE_INQUIRY.value(), 1);
                     }
                 })
                 .create(com.qmuiteam.qmui.R.style.QMUI_Dialog).show();
@@ -132,7 +177,10 @@ public abstract class BaseMqttActivity extends BaseActivity {
 
     protected abstract void notifyConnectFail(ErrorCode errorCode);
 
+    protected abstract void notifyMsgTimeOut(int currentWaitMsgProtocolType);
+
     protected abstract int currentDeviceType();
+
 
     protected void sendRequest(int requestType, int deviceType, int protocolType, int data) {
         currentWaitMsgProtocolType = protocolType;

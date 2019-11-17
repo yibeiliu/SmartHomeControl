@@ -96,7 +96,7 @@ public class LoginActivity extends BaseActivity {
 
     private void doLogin() {
         showDialog(this, DialogType.LOADING, true, "正在加载", 0);
-        LoginModel.getInstance().doLogin(usernameEt.getText().toString(), passwordEt.getText().toString(), new LoginModel.onLoginStatusListener() {
+        LoginModel.getInstance().doLogin(this, usernameEt.getText().toString(), passwordEt.getText().toString(), new LoginModel.onLoginStatusListener() {
             @Override
             public void onSuccess() {
                 dismissDialog();

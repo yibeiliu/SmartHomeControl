@@ -29,6 +29,14 @@ public class HumidifierActivity extends BaseMqttActivity {
     private SegmentControl scWindLevel;
     private SegmentControl scWindDirection;
 
+    private LinearLayout llBluetooth;
+    private TextView tvBluetoothText;
+    private CXToggleButton tbBluetoothButton;
+
+    private static final String POWER_TAG = "POWER_TAG";
+    private static final String BLUETOOTH_TAG = "BLUETOOTH_TAG";
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,6 +73,17 @@ public class HumidifierActivity extends BaseMqttActivity {
                         Constants.PROTOCOL_TYPE.POWER_STATE.value(), tbPowerButton.isChecked() ? 0 : 1);
             }
         });
+
+        llBluetooth = findViewById(R.id.llBluetooth);
+        tvBluetoothText = llBluetooth.findViewById(R.id.tvContent);
+        tbBluetoothButton = llBluetooth.findViewById(R.id.toggleButton);
+        tbBluetoothButton.setOnToggleClickListener(new CXToggleButton.OnToggleClickListener() {
+            @Override
+            public void onToggleClick(@Nullable View view) {
+                sendRequest(0, Constants.DEVICE_TYPE.MOISTURIZER.value(),
+                        Constants.PROTOCOL_TYPE.BLUETOOTH.value(), tbBluetoothButton.isChecked() ? 0 : 1);
+            }
+        });
     }
 
     @Override
@@ -84,6 +103,7 @@ public class HumidifierActivity extends BaseMqttActivity {
         for (ProtocolDeviceStatus item : protocolDeviceStatuses) {
             if (item.getProtocolType() == Constants.PROTOCOL_TYPE.POWER_STATE.value()) {
                 int powerStatus = Integer.parseInt(item.getProtocolContent());
+                currentDeviceStatusMap.put(Constants.PROTOCOL_TYPE.POWER_STATE.value(), powerStatus);
                 if (powerStatus == 1) {
                     //开机状态
                     tvPowerText.setText("开机中");
@@ -96,10 +116,21 @@ public class HumidifierActivity extends BaseMqttActivity {
                     tbPowerButton.setToggleButtonState(false);
                 }
             } else if (item.getProtocolType() == Constants.PROTOCOL_TYPE.WIND_LEVEL.value()) {
+                currentDeviceStatusMap.put(Constants.PROTOCOL_TYPE.WIND_LEVEL.value(), Integer.parseInt(item.getProtocolContent()) - 1);
                 scWindLevel.setSelectedIndex(Integer.parseInt(item.getProtocolContent()) - 1);
             } else if (item.getProtocolType() == Constants.PROTOCOL_TYPE.WIND_DIRECTION.value()) {
                 int windDirection = Integer.parseInt(item.getProtocolContent());
+                currentDeviceStatusMap.put(Constants.PROTOCOL_TYPE.WIND_DIRECTION.value(), windDirection - 1);
                 scWindDirection.setSelectedIndex(windDirection - 1);
+            } else if (item.getProtocolType() == Constants.PROTOCOL_TYPE.BLUETOOTH.value()) {
+                currentDeviceStatusMap.put(Constants.PROTOCOL_TYPE.BLUETOOTH.value(), Integer.parseInt(item.getProtocolContent()));
+                if (Integer.parseInt(item.getProtocolContent()) == 1) {
+                    tvBluetoothText.setText("蓝牙已开启");
+                    tbBluetoothButton.setToggleButtonState(true);
+                } else {
+                    tvBluetoothText.setText("蓝牙已关闭");
+                    tbBluetoothButton.setToggleButtonState(false);
+                }
             }
         }
     }
@@ -107,6 +138,39 @@ public class HumidifierActivity extends BaseMqttActivity {
     @Override
     protected void notifyConnectFail(ErrorCode errorCode) {
 
+    }
+
+    @Override
+    protected void notifyMsgTimeOut(int currentWaitMsgProtocolType) {
+        if (currentWaitMsgProtocolType == Constants.PROTOCOL_TYPE.POWER_STATE.value()) {
+            int currentPowerStatus = currentDeviceStatusMap.get(Constants.PROTOCOL_TYPE.POWER_STATE.value());
+            if (currentPowerStatus == 1) {
+                //返回开机状态
+                tvPowerText.setText("开机中");
+                llControlLayout.setVisibility(View.VISIBLE);
+                tbPowerButton.setToggleButtonState(true);
+            } else {
+                //返回关机状态
+                tvPowerText.setText("关机中");
+                llControlLayout.setVisibility(View.INVISIBLE);
+                tbPowerButton.setToggleButtonState(false);
+            }
+        } else if (currentWaitMsgProtocolType == Constants.PROTOCOL_TYPE.WIND_LEVEL.value()) {
+            int currentWindLevelStatus = currentDeviceStatusMap.get(Constants.PROTOCOL_TYPE.WIND_LEVEL.value());
+            scWindLevel.setSelectedIndex(currentWindLevelStatus);
+        } else if (currentWaitMsgProtocolType == Constants.PROTOCOL_TYPE.WIND_DIRECTION.value()) {
+            int currentWindDirectionStatus = currentDeviceStatusMap.get(Constants.PROTOCOL_TYPE.WIND_DIRECTION.value());
+            scWindDirection.setSelectedIndex(currentWindDirectionStatus);
+        } else if (currentWaitMsgProtocolType == Constants.PROTOCOL_TYPE.BLUETOOTH.value()) {
+            int currentBluetoothStatus = currentDeviceStatusMap.get(Constants.PROTOCOL_TYPE.BLUETOOTH.value());
+            if (currentBluetoothStatus == 1) {
+                tvBluetoothText.setText("蓝牙已开启");
+                tbBluetoothButton.setToggleButtonState(true);
+            } else {
+                tvBluetoothText.setText("蓝牙已关闭");
+                tbBluetoothButton.setToggleButtonState(false);
+            }
+        }
     }
 
     @Override

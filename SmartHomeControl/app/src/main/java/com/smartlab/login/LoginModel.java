@@ -1,7 +1,10 @@
 package com.smartlab.login;
 
+import android.content.Context;
 import android.os.Handler;
 import android.text.TextUtils;
+
+import com.smartlab.Utils.SharePre;
 
 /**
  * @Author peiyi.liu
@@ -22,11 +25,11 @@ public class LoginModel {
         return LoginModel;
     }
 
-    public void doLogin(final String username,final String password,final onLoginStatusListener listener) {
+    public void doLogin(final Context context, final String username, final String password, final onLoginStatusListener listener) {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                if (checkLoginInfo(username, password)) {
+                if (checkLoginInfo(context, username, password)) {
                     listener.onSuccess();
                 } else {
                     listener.OnFailure("Your input a wrong user info!");
@@ -35,8 +38,9 @@ public class LoginModel {
         }, 1000);
     }
 
-    private boolean checkLoginInfo(String username, String password) {
-        if (TextUtils.equals(username, "admin") && TextUtils.equals(username, "admin")) {
+    private boolean checkLoginInfo(Context context, String username, String password) {
+        String pwd = SharePre.getLoginPassword(context);
+        if (TextUtils.equals(username, "admin") && TextUtils.equals(password, pwd)) {
             return true;
         }
         return false;

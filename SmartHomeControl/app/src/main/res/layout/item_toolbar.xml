@@ -16,18 +16,19 @@
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:gravity="center"
-        android:text="Offers"
+        android:textSize="18sp"
+        android:textColor="@color/white"
         android:layout_centerVertical="true" />
 
-    <ImageButton
-        android:id="@+id/toolbar_menu_ib"
-        android:layout_width="50dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="right"
-        android:layout_alignParentEnd="true"
-        android:paddingBottom="5dp"
-        android:paddingTop="5dp"
-        android:background="@color/transparent"
-        android:src="@drawable/menu" />
+    <!--<ImageButton-->
+        <!--android:id="@+id/toolbar_menu_ib"-->
+        <!--android:layout_width="50dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="right"-->
+        <!--android:layout_alignParentEnd="true"-->
+        <!--android:paddingBottom="5dp"-->
+        <!--android:paddingTop="5dp"-->
+        <!--android:background="@color/transparent"-->
+        <!--android:src="@drawable/menu" />-->
 
 </androidx.appcompat.widget.Toolbar>

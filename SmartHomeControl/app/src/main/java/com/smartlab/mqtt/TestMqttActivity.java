@@ -33,6 +33,11 @@ public class TestMqttActivity extends BaseMqttActivity {
     }
 
     @Override
+    protected void notifyMsgTimeOut(int currentWaitMsgProtocolType) {
+
+    }
+
+    @Override
     protected int currentDeviceType() {
         return Constants.DEVICE_WATER_PURIFIER;
     }

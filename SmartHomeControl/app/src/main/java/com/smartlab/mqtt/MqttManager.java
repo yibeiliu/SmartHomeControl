@@ -130,7 +130,7 @@ public class MqttManager {
         }
         try {
             final String[] topicFilter = {Config.TOPIC_RECEIVE};
-            final int[] qos = {0};
+            final int[] qos = {1};
             mqttAndroidClient.subscribe(topicFilter, qos, null, new IMqttActionListener() {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
@@ -142,7 +142,6 @@ public class MqttManager {
                     listener.onFail(ErrorCode.CONNECT_FAIL);
                 }
             });
-
         } catch (MqttException ex) {
             ex.printStackTrace();
         }

@@ -43,7 +43,9 @@ public class ProtocalAnalyst {
     }
 
     public static String formatTime(String protocolContent) {
-        //todo
-        return protocolContent;
+        return protocolContent.replace("D", "天")
+                .replace("H", "小时")
+                .replace("M", "分")
+                .replace("S", "秒");
     }
 }

@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -63,11 +62,8 @@ public class RefindPwdActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 if (checkPwd(newConfirmEt.getText().toString())) {
-                    Log.d("lpy","666");
-                    SharePre.setLoginPassword(RefindPwdActivity.this, confirmBtn.getText().toString());
-                    Log.d("lpy","777");
+                    SharePre.setLoginPassword(RefindPwdActivity.this, newConfirmEt.getText().toString());
                     Toast.makeText(RefindPwdActivity.this, "修改完成，请重新登录", Toast.LENGTH_SHORT).show();
-                    Log.d("lpy","88");
                     finish();
                 }
             }
@@ -75,19 +71,14 @@ public class RefindPwdActivity extends BaseActivity {
     }
 
     private boolean checkPwd(String newPwd) {
-        Log.d("lpy","111");
         if (!oldPwd.equals(oldPwdEt.getText().toString())) {
-            Log.d("lpy","222");
             showDialog(RefindPwdActivity.this, DialogType.FAIL, true, "旧密码输入错误", 2000);
             return false;
         }
         if (oldPwd.equals(newPwd)) {
-            Log.d("lpy","333");
             showDialog(RefindPwdActivity.this, DialogType.FAIL, true, "新旧密码不能相同", 2000);
-            Log.d("lpy","444");
             return false;
         }
-        Log.d("lpy","555");
         return true;
     }
 }
