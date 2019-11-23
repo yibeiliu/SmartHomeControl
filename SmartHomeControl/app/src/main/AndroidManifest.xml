@@ -13,6 +13,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
+        android:name=".MainApplication"
         android:allowBackup="true"
         android:icon="@mipmap/app_name"
         android:label="@string/app_name"
@@ -20,15 +21,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".mqtt.BaseMqttActivity"/>
         <activity android:name=".control.AirPurifierActivity" />
         <activity android:name=".control.HumidifierActivity" />
         <activity android:name=".control.WaterPurifierActivity" />
         <activity android:name=".login.RefindPwdActivity" />
         <activity android:name=".bluetooth.BtConnectActivity" />
         <activity android:name=".bluetooth.BtTestActivity" />
-        <activity android:name=".mqtt.TestMqttActivity">
-        </activity>
+        <activity android:name=".mqtt.TestMqttActivity"/>
         <activity android:name=".bluetooth.BTConnectActivity1" />
         <activity android:name=".base.BaseActivity" />
         <activity android:name=".login.LoginActivity">
@@ -42,6 +41,13 @@
             android:name=".home.MainActivity"
             android:launchMode="singleTask" /> <!-- Mqtt Service -->
         <service android:name="org.eclipse.paho.android.service.MqttService" />
+
+        <activity
+        android:name=".wxapi.WXEntryActivity"
+        android:exported="true"
+        android:launchMode="singleTop"
+        android:screenOrientation="portrait"
+        android:theme="@style/NoTitleTranslucent80Theme"/>
     </application>
 
 </manifest>

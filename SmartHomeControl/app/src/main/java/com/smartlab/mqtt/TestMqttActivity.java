@@ -1,7 +1,6 @@
 package com.smartlab.mqtt;
 
 import android.os.Bundle;
-import android.widget.Toast;
 
 import com.smartlab.R;
 import com.smartlab.data.mqtt.ProtocolData;
@@ -18,18 +17,18 @@ public class TestMqttActivity extends BaseMqttActivity {
 
     @Override
     protected void notifySubscribeSuccess() {
-        Toast.makeText(this, "notifySubscribeSuccess", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "notifySubscribeSuccess", Toast.LENGTH_SHORT).show();
 
     }
 
     @Override
     protected void notifyMessageReceived(ProtocolData protocolData) {
-        Toast.makeText(this, "notifyMessageReceived", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "notifyMessageReceived", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     protected void notifyConnectFail(ErrorCode errorCode) {
-        Toast.makeText(this, "notifyConnectFail", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "notifyConnectFail", Toast.LENGTH_SHORT).show();
     }
 
     @Override

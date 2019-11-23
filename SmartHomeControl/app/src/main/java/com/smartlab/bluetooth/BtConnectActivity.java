@@ -65,7 +65,7 @@ public class BtConnectActivity extends BaseActivity {
                     return;
                 }
                 map.put(deviceName, deviceMacAddress);
-                SmartDevice smartDevice = new SmartDevice(deviceName, deviceMacAddress, R.drawable.jingshuiqi);
+                SmartDevice smartDevice = new SmartDevice(deviceName, deviceMacAddress, R.mipmap.ic_launcher);
                 addListAndNoticeRV(smartDevice);
             }
         }

@@ -2,12 +2,15 @@ package com.smartlab.control;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import androidx.appcompat.widget.Toolbar;
 
 import com.sevenheaven.segmentcontrol.SegmentControl;
 import com.smartlab.R;
+import com.smartlab.Utils.WxShareUtils;
 import com.smartlab.data.mqtt.ProtocolData;
 import com.smartlab.data.mqtt.ProtocolDeviceStatus;
 import com.smartlab.model.Constants;
@@ -42,6 +45,23 @@ public class HumidifierActivity extends BaseMqttActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_humidifier);
         initView();
+        configureToolbar();
+    }
+
+    private void configureToolbar() {
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        TextView title = findViewById(R.id.toolbar_title_tv);
+        title.setText("杀菌加湿器");
+        ImageButton shareIconBtn = findViewById(R.id.toolbar_menu_ib);
+        shareIconBtn.setImageResource(R.drawable.ic_share);
+        shareIconBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                WxShareUtils.shareImage(HumidifierActivity.this, WxShareUtils.getImageFromView(HumidifierActivity.this));
+            }
+        });
     }
 
     private void initView() {
@@ -88,12 +108,12 @@ public class HumidifierActivity extends BaseMqttActivity {
 
     @Override
     protected void notifySubscribeSuccess() {
-        Toast.makeText(this, "加湿器连接成功", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "加湿器连接成功", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     protected void notifyMessageReceived(ProtocolData protocolData) {
-        Toast.makeText(this, "收到消息", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "收到消息", Toast.LENGTH_SHORT).show();
 
         if (protocolData == null) {
             return;

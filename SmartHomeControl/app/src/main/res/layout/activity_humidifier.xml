@@ -6,6 +6,13 @@
     android:layout_height="match_parent"
     tools:context=".control.HumidifierActivity">
 
+    <include
+        android:id="@+id/humidifier_toolbar"
+        layout="@layout/item_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/humidifier_guide_left"
         android:layout_width="match_parent"
@@ -23,7 +30,9 @@
     <include
         android:id="@+id/humidifier_power_state"
         layout="@layout/item_state_layout"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/humidifier_toolbar" />
 
     <LinearLayout
         android:id="@+id/humidifier_control_ll"

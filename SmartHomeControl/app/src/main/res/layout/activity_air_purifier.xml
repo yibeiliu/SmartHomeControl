@@ -2,9 +2,17 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/air_purifier_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".control.AirPurifierActivity">
+
+    <include
+        android:id="@+id/air_purifier_toolbar"
+        layout="@layout/item_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/air_purifier_guide_left"
@@ -23,7 +31,9 @@
     <include
         android:id="@+id/llPowerState"
         layout="@layout/item_state_layout"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/air_purifier_toolbar" />
 
     <LinearLayout
         android:id="@+id/air_purifier_control_ll"

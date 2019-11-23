@@ -9,9 +9,9 @@ public class Config {
     public static final String secretKey = "xxx";
     public static final String topic1 = "SmartHome-WaterPurifier-Update/01/";
     public static final String topic2 = "SmartHome-WaterPurifier-Update/02/";
-    public static final String topic3 = "SmartHome-WaterPurifier-Update/03/";
+    public static final String topic3 = "SmartHome-WaterPu`rifier-Update/03/";
     public static final String topic4 = "SmartHome-WaterPurifier-Update/04/";
 
-    public static final String TOPIC_SEND = "SmartHome-WaterPurifier-Update/HardWare";
-    public static final String TOPIC_RECEIVE = "SmartHome-WaterPurifier-Update/SmartPhone";
+    public static final String TOPIC_SEND = "SmartHome-WaterPurifier-Update/HardWare/";
+    public static final String TOPIC_RECEIVE = "SmartHome-WaterPurifier-Update/SmartPhone/";
 }

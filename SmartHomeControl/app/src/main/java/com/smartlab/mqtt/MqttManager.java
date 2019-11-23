@@ -176,15 +176,14 @@ public class MqttManager {
     }
 
     private String buildRequest(int requestType, int deviceType, int protocolType, int data) {
-        StringBuilder stringBuilder = new StringBuilder();
+        String result = (requestType == 0 ? Constants.HEADER_ONE : Constants.HEADER_ALL) + Constants.SPLIT +
+                deviceType + Constants.SPLIT +
+                protocolType + Constants.SPLIT +
+                data + Constants.SPLIT +
+                "{}" + Constants.SPLIT +
+                Constants.ENDING;
+        int totalLength = result.length() - 2;
 
-        stringBuilder.append(requestType == 0 ? Constants.HEADER_ONE : Constants.HEADER_ALL)
-                .append(deviceType).append(Constants.SPLIT)
-                .append(protocolType).append(Constants.SPLIT)
-                .append(data).append(Constants.SPLIT)
-                .append(1).append(Constants.SPLIT)
-                .append(Constants.ENDING);
-
-        return stringBuilder.toString();
+        return result.replace("{}", "" + totalLength);
     }
 }
