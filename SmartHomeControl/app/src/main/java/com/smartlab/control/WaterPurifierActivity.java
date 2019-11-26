@@ -114,6 +114,7 @@ public class WaterPurifierActivity extends BaseMqttActivity {
         llPowerState = findViewById(R.id.llPowerState);
         tvPowerText = llPowerState.findViewById(R.id.tvContent);
         tbPowerButton = llPowerState.findViewById(R.id.toggleButton);
+        tvPowerText.setText("设备连接中...");
         tbPowerButton.setTag(POWER_TAG);
         tbPowerButton.setOnToggleClickListener(listener);
 
@@ -159,11 +160,13 @@ public class WaterPurifierActivity extends BaseMqttActivity {
                     tvPowerText.setText("开机中");
                     llControlLayout.setVisibility(View.VISIBLE);
                     tbPowerButton.setToggleButtonState(true);
+                    setDeviceOpen(true);
                 } else {
                     //关机状态
                     tvPowerText.setText("关机中");
                     llControlLayout.setVisibility(View.INVISIBLE);
                     tbPowerButton.setToggleButtonState(false);
+                    setDeviceOpen(false);
                 }
             } else if (item.getProtocolType() == Constants.PROTOCOL_TYPE.TIME_STATE.value()) {
                 tvTimeStatus.setText(ProtocalAnalyst.formatTime(item.getProtocolContent()));

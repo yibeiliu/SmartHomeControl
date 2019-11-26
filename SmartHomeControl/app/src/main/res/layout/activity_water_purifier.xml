@@ -75,20 +75,20 @@
             android:id="@+id/water_purifier_water_status_sc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_gravity="start"
+            android:layout_marginStart="10dp"
             android:layout_marginTop="5dp"
             android:textSize="18sp"
             app:block_direction="horizon"
             app:boundWidth="2dp"
-            app:cornerRadius="2dp"
+            app:cornerRadius="15dp"
             app:horizonGap="10dp"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/water_purifier_water_status_hint_tv"
             app:normalColor="#FFFFFF"
-            app:selectedColor="#32ADFF"
+            app:selectedColor="@color/lightskyblue"
             app:separatorWidth="1dp"
-            app:texts="停止|出水中"
+            app:texts="停 水|制 水"
             app:verticalGap="10dp" />
 
         <TextView
@@ -105,22 +105,30 @@
             android:id="@+id/water_purifier_heating_status_sc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_gravity="start"
+            android:layout_marginStart="10dp"
             android:layout_marginTop="5dp"
             android:textSize="18sp"
             app:block_direction="horizon"
             app:boundWidth="2dp"
-            app:cornerRadius="2dp"
+            app:cornerRadius="15dp"
             app:horizonGap="10dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_weight="1"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/water_purifier_heating_hint_tv"
             app:normalColor="#FFFFFF"
-            app:selectedColor="#32ADFF"
+            app:selectedColor="@color/lightskyblue"
             app:separatorWidth="1dp"
-            app:texts="保温|加热"
+            app:texts="保 温|加 热"
             app:verticalGap="10dp" />
+
+        <TextView
+            android:id="@+id/water_purifier_core_hint_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="滤芯"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
         <include
             android:id="@+id/llFilterCore"
@@ -132,6 +140,15 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/water_purifier_heating_status_sc" />
 
+        <TextView
+            android:id="@+id/water_purifier_fix_hint_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="维护"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
         <include
             android:id="@+id/llMaintain"
             layout="@layout/item_state_layout"
@@ -141,6 +158,15 @@
             app:layout_constraintHorizontal_weight="1"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/llFilterCore" />
+
+        <TextView
+            android:id="@+id/water_purifier_bt_hint_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="蓝牙"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
         <include
             android:id="@+id/llBluetooth"

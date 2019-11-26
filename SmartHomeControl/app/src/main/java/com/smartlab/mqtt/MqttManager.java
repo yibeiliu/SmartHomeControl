@@ -93,7 +93,7 @@ public class MqttManager {
             // Signature 方式
             mqttConnectOptions.setUserName("Signature|" + Config.accessKey + "|" + Config.instanceId);
 //            mqttConnectOptions.setPassword(Tool.macSignature(Config.clientId, Config.secretKey).toCharArray());
-            mqttConnectOptions.setPassword("jJ13ykgRFPXG0cK5zJ1RVxnHDq4=".toCharArray());
+            mqttConnectOptions.setPassword(Config.pwd.toCharArray());
 
             /**
              * Token方式

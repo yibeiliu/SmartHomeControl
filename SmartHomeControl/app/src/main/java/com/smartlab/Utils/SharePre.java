@@ -3,7 +3,6 @@ package com.smartlab.Utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.util.Log;
 
 import com.google.gson.Gson;
 import com.smartlab.data.UserAndDevice;
@@ -51,7 +50,6 @@ public class SharePre {
     public static UserAndDevice getUserAndDevices(Context context) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         String a = sp.getString(KEY_SP_USER_DEVICES, null);
-        Log.d("lpy","getUserAndDevices() = " + a);
         return new Gson().fromJson(a, UserAndDevice.class);
     }
 }

@@ -6,6 +6,8 @@ import android.text.TextUtils;
 
 import com.smartlab.Utils.SharePre;
 
+import static com.smartlab.Utils.StaticValues.USERNAME;
+
 /**
  * @Author peiyi.liu
  * @Date 10/30/2019 4:13 PM
@@ -40,7 +42,7 @@ public class LoginModel {
 
     private boolean checkLoginInfo(Context context, String username, String password) {
         String pwd = SharePre.getLoginPassword(context);
-        if (TextUtils.equals(username, "admin") && TextUtils.equals(password, pwd)) {
+        if (TextUtils.equals(username, USERNAME) && TextUtils.equals(password, pwd)) {
             return true;
         }
         return false;

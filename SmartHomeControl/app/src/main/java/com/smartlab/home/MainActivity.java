@@ -3,7 +3,6 @@ package com.smartlab.home;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -47,11 +46,10 @@ public class MainActivity extends BaseActivity {
         homeRVAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, final View view, int position) {
-                Log.d("lpy", "pos = " + position);
                 HomeMultiItem multiItem = (HomeMultiItem) adapter.getItem(position);
                 switch (adapter.getItemViewType(position)) {
                     case HomeMultiItem.ADD_PAGE:
-                        final String[] items = new String[]{"通过蓝牙添加", "扫描二维码添加"};
+                        final String[] items = new String[]{"通过蓝牙添加"/*, "扫描二维码添加"*/};
                         new QMUIDialog.MenuDialogBuilder(view.getContext())
                                 .addItems(items, new DialogInterface.OnClickListener() {
                                     @Override

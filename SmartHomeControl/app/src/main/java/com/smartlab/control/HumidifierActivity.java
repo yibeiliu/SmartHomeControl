@@ -64,6 +64,7 @@ public class HumidifierActivity extends BaseMqttActivity {
 
         llPowerState = findViewById(R.id.humidifier_power_state);
         tvPowerText = llPowerState.findViewById(R.id.tvContent);
+        tvPowerText.setText("设备连接中...");
         tbPowerButton = llPowerState.findViewById(R.id.toggleButton);
         tbPowerButton.setOnToggleClickListener(new CXToggleButton.OnToggleClickListener() {
             @Override
@@ -108,11 +109,13 @@ public class HumidifierActivity extends BaseMqttActivity {
                     tvPowerText.setText("开机中");
                     llControlLayout.setVisibility(View.VISIBLE);
                     tbPowerButton.setToggleButtonState(true);
+                    setDeviceOpen(true);
                 } else {
                     //关机状态
                     tvPowerText.setText("关机中");
                     llControlLayout.setVisibility(View.INVISIBLE);
                     tbPowerButton.setToggleButtonState(false);
+                    setDeviceOpen(false);
                 }
             } else if (item.getProtocolType() == Constants.PROTOCOL_TYPE.WIND_LEVEL.value()) {
                 currentDeviceStatusMap.put(Constants.PROTOCOL_TYPE.WIND_LEVEL.value(), Integer.parseInt(item.getProtocolContent()) - 1);

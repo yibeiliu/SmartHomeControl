@@ -5,7 +5,6 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -19,6 +18,8 @@ import com.smartlab.home.MainActivity;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import io.reactivex.functions.Consumer;
+
+import static com.smartlab.Utils.StaticValues.USERNAME;
 
 public class LoginActivity extends BaseActivity {
 
@@ -56,7 +57,6 @@ public class LoginActivity extends BaseActivity {
         confirmBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("lpy", "onCLick: ");
                 doLogin();
             }
         });
@@ -73,7 +73,7 @@ public class LoginActivity extends BaseActivity {
         loginUpTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDialog(LoginActivity.this, DialogType.INFO, false, "暂时不支持注册", 2000);
+                showDialog(LoginActivity.this, DialogType.INFO, false, "在线注册尚未开放，请联系管理员", 2000);
             }
         });
     }
@@ -86,7 +86,7 @@ public class LoginActivity extends BaseActivity {
             usernameEt.setText(localUsername);
         } else {
             //证明第一次登陆
-            SharePre.setLoginUsername(getApplicationContext(), StaticValues.USERNAME);
+            SharePre.setLoginUsername(getApplicationContext(), USERNAME);
             SharePre.setLoginPassword(getApplicationContext(), StaticValues.PASSWORD);
         }
         if (!TextUtils.isEmpty(localPassword)) {
@@ -100,7 +100,7 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void onSuccess() {
                 dismissDialog();
-                SharePre.setLoginUsername(getApplicationContext(), usernameEt.getText().toString());
+                SharePre.setLoginUsername(getApplicationContext(), USERNAME);
                 SharePre.setLoginPassword(getApplicationContext(), passwordEt.getText().toString());
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                 LoginActivity.this.startActivity(intent);

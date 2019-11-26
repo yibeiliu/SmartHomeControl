@@ -108,6 +108,7 @@ public class AirPurifierActivity extends BaseMqttActivity {
 
         llPowerState = findViewById(R.id.llPowerState);
         tvPowerText = llPowerState.findViewById(R.id.tvContent);
+        tvPowerText.setText("设备连接中...");
         tbPowerButton = llPowerState.findViewById(R.id.toggleButton);
         tbPowerButton.setTag(POWER_TAG);
         tbPowerButton.setOnToggleClickListener(listener);
@@ -155,11 +156,13 @@ public class AirPurifierActivity extends BaseMqttActivity {
                     tvPowerText.setText("开机中");
                     llControlLayout.setVisibility(View.VISIBLE);
                     tbPowerButton.setToggleButtonState(true);
+                    setDeviceOpen(true);
                 } else {
                     //关机状态
                     tvPowerText.setText("关机中");
                     llControlLayout.setVisibility(View.INVISIBLE);
                     tbPowerButton.setToggleButtonState(false);
+                    setDeviceOpen(false);
                 }
             } else if (item.getProtocolType() == Constants.PROTOCOL_TYPE.TIME_STATE.value()) {
                 tvTimeStatus.setText(ProtocalAnalyst.formatTime(item.getProtocolContent()));
@@ -171,7 +174,7 @@ public class AirPurifierActivity extends BaseMqttActivity {
                 currentDeviceStatusMap.put(Constants.PROTOCOL_TYPE.WIND_DIRECTION.value(), windDirection);
                 scWindDirection.setSelectedIndex(windDirection - 1);
             } else if (item.getProtocolType() == Constants.PROTOCOL_TYPE.TEMPERATURE.value()) {
-                tvTemperature.setText(item.getProtocolContent() + " 度");
+                tvTemperature.setText(item.getProtocolContent() + " ℃");
             } else if (item.getProtocolType() == Constants.PROTOCOL_TYPE.FILTER_CORE.value()) {
                 currentDeviceStatusMap.put(Constants.PROTOCOL_TYPE.FILTER_CORE.value(), Integer.parseInt(item.getProtocolContent()));
                 if (Integer.parseInt(item.getProtocolContent()) == 1) {

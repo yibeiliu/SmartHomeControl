@@ -27,10 +27,13 @@ public abstract class BaseMqttActivity extends BaseActivity {
     private static final int HANDLER_MSG_WAIT = 1000;
     private static final int OVER_TIME_THRESHOLD = 2000;//todo
 
+    private static final int HANDLER_MSG_TIME_WAIT = 1001;
+    private static final int TIME_OVER_TIME_THRESHOLD = 3000;
     private MqttManager mqttManager;
     private MqttManager.OnMqttActionListener mqttActionListener;
     private int currentWaitMsgProtocolType = -1;
     private boolean isShowLinkingDialog = false;
+    private boolean isDeviceOpen = false;
 
     @SuppressLint("UseSparseArrays")
     protected Map<Integer, Integer> currentDeviceStatusMap = new HashMap<>();
@@ -53,6 +56,17 @@ public abstract class BaseMqttActivity extends BaseActivity {
         }
     };
 
+    @SuppressLint("HandlerLeak")
+    private Handler timeOverTimeHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            overTimeHandler.removeCallbacksAndMessages(null);
+            dismissDialog();
+            showDeviceQuitDialog();
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,8 +76,11 @@ public abstract class BaseMqttActivity extends BaseActivity {
         mqttActionListener = new MqttManager.OnMqttActionListener() {
             @Override
             public void onSubscribeSuccess() {
-                sendRequest(1, currentDeviceType(),
-                        Constants.PROTOCOL_TYPE.WHOLSE_STATE_INQUIRY.value(), 1);
+                if (!overTimeHandler.hasMessages(HANDLER_MSG_WAIT)) {
+                    sendRequest(1, currentDeviceType(),
+                            Constants.PROTOCOL_TYPE.WHOLSE_STATE_INQUIRY.value(), 1);
+                    return;
+                }
                 notifySubscribeSuccess();
             }
 
@@ -89,6 +106,17 @@ public abstract class BaseMqttActivity extends BaseActivity {
                     currentWaitMsgProtocolType = -1;
                     overTimeHandler.removeCallbacksAndMessages(null);
                     dismissDialog();
+                }
+
+                //判断 device 是否掉线
+                for (ProtocolDeviceStatus item : protocolData.getProtocolDeviceStatuses()) {
+                    if (isDeviceOpen && item.getProtocolType() == Constants.PROTOCOL_TYPE.TIME_STATE.value()) {
+                        timeOverTimeHandler.removeCallbacksAndMessages(null);
+                        Message timeMsg = Message.obtain();
+                        timeMsg.what = HANDLER_MSG_TIME_WAIT;
+                        timeOverTimeHandler.sendMessageDelayed(timeMsg, TIME_OVER_TIME_THRESHOLD);
+                        break;
+                    }
                 }
 
                 for (ProtocolDeviceStatus item : protocolData.getProtocolDeviceStatuses()) {
@@ -172,6 +200,22 @@ public abstract class BaseMqttActivity extends BaseActivity {
                 .create(com.qmuiteam.qmui.R.style.QMUI_Dialog).show();
     }
 
+    private void showDeviceQuitDialog() {
+        new QMUIDialog.MessageDialogBuilder(this)
+                .setTitle("掉线")
+                .setMessage("与设备连接断开")
+                .addAction(0, "退出", QMUIDialogAction.ACTION_PROP_NEGATIVE, new QMUIDialogAction.ActionListener() {
+                    @Override
+                    public void onClick(QMUIDialog dialog, int index) {
+                        dialog.dismiss();
+                        finish();
+                    }
+                })
+                .setCancelable(false)
+                .setCanceledOnTouchOutside(false)
+                .create(com.qmuiteam.qmui.R.style.QMUI_Dialog).show();
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -238,5 +282,18 @@ public abstract class BaseMqttActivity extends BaseActivity {
                         .create(com.qmuiteam.qmui.R.style.QMUI_Dialog).show();
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        timeOverTimeHandler.removeCallbacksAndMessages(null);
+    }
+
+    protected void setDeviceOpen(boolean isOpen) {
+        isDeviceOpen = isOpen;
+        if (!isDeviceOpen) {
+            timeOverTimeHandler.removeCallbacksAndMessages(null);
+        }
     }
 }
