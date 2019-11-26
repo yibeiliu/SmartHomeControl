@@ -18,7 +18,11 @@ import java.io.ByteArrayOutputStream;
 public class WxShareUtils {
     public static final String APP_ID = "wx9152fc292f3b251f";
 
-    public static void shareImage(Context context, Bitmap thumbBmp) {
+    public enum WxShareType {
+        TO_PEOPLE, TO_FRIEND_CIRCLE
+    }
+
+    public static void shareImage(Context context, Bitmap thumbBmp, WxShareType type) {
         // 通过appId得到IWXAPI这个对象
         IWXAPI wxapi = WXAPIFactory.createWXAPI(context, APP_ID);
         // 检查手机或者模拟器是否安装了微信
@@ -38,9 +42,13 @@ public class WxShareUtils {
 
 //构造一个Req
         SendMessageToWX.Req req = new SendMessageToWX.Req();
-        req.transaction = "image_123";
+        req.transaction = "睿管家";
         req.message = msg;
-        req.scene = SendMessageToWX.Req.WXSceneSession;
+        if (type == WxShareType.TO_PEOPLE) {
+            req.scene = SendMessageToWX.Req.WXSceneSession;
+        } else {
+            req.scene = SendMessageToWX.Req.WXSceneTimeline;
+        }
 //调用api接口，发送数据到微信
         wxapi.sendReq(req);
     }

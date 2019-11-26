@@ -3,16 +3,13 @@ package com.smartlab.control;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.Toolbar;
-import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.sevenheaven.segmentcontrol.SegmentControl;
 import com.smartlab.R;
-import com.smartlab.Utils.WxShareUtils;
 import com.smartlab.data.mqtt.ProtocolData;
 import com.smartlab.data.mqtt.ProtocolDeviceStatus;
 import com.smartlab.model.Constants;
@@ -81,30 +78,11 @@ public class AirPurifierActivity extends BaseMqttActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_air_purifier);
+        super.onCreate(savedInstanceState);
 
         initView();
 
-        configureToolbar();
-    }
-
-    private void configureToolbar() {
-
-        final ConstraintLayout root = findViewById(R.id.air_purifier_root);
-        toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        TextView title = findViewById(R.id.toolbar_title_tv);
-        title.setText("空气净化器");
-        ImageButton shareIconBtn = findViewById(R.id.toolbar_menu_ib);
-        shareIconBtn.setImageResource(R.drawable.ic_share);
-        shareIconBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                WxShareUtils.shareImage(AirPurifierActivity.this,WxShareUtils.getImageFromView(AirPurifierActivity.this));
-            }
-        });
     }
 
     private void initView() {

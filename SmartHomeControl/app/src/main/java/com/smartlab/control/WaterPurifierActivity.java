@@ -2,15 +2,11 @@ package com.smartlab.control;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.appcompat.widget.Toolbar;
-
 import com.sevenheaven.segmentcontrol.SegmentControl;
 import com.smartlab.R;
-import com.smartlab.Utils.WxShareUtils;
 import com.smartlab.data.mqtt.ProtocolData;
 import com.smartlab.data.mqtt.ProtocolDeviceStatus;
 import com.smartlab.model.Constants;
@@ -76,26 +72,9 @@ public class WaterPurifierActivity extends BaseMqttActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_water_purifier);
+        super.onCreate(savedInstanceState);
         initView();
-        configureToolbar();
-    }
-
-    private void configureToolbar() {
-
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        TextView title = findViewById(R.id.toolbar_title_tv);
-        title.setText("净水器");
-        ImageButton shareIconBtn = findViewById(R.id.toolbar_menu_ib);
-        shareIconBtn.setImageResource(R.drawable.ic_share);
-        shareIconBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                WxShareUtils.shareImage(WaterPurifierActivity.this, WxShareUtils.getImageFromView(WaterPurifierActivity.this));
-            }
-        });
     }
 
     private void initView() {
