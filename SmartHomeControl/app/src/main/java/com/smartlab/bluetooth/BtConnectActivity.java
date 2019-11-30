@@ -65,7 +65,15 @@ public class BtConnectActivity extends BaseActivity {
                     return;
                 }
                 map.put(deviceName, deviceMacAddress);
-                SmartDevice smartDevice = new SmartDevice(deviceName, deviceMacAddress, R.mipmap.ic_launcher);
+                int iconId = R.mipmap.ic_launcher;
+                if (StaticValues.AIR_PURIFIER.equals(deviceName)) {
+                    iconId = R.drawable.svg_air_purifier;
+                } else if (StaticValues.HUMIDIFIER.equals(deviceName)) {
+                    iconId = R.drawable.svg_humidifier;
+                } else if (StaticValues.WATER_PURIFIER.equals(deviceName)) {
+                    iconId = R.drawable.svg_water_purifier;
+                }
+                SmartDevice smartDevice = new SmartDevice(deviceName, deviceMacAddress, iconId);
                 addListAndNoticeRV(smartDevice);
             }
         }
@@ -123,7 +131,7 @@ public class BtConnectActivity extends BaseActivity {
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 final SmartDevice smartDevice = (SmartDevice) adapter.getItem(position);
                 assert smartDevice != null;
-                if(!isDeviceInThreeList(smartDevice)){
+                if (!isDeviceInThreeList(smartDevice)) {
                     //提示不支持当前设备
                     showDialog(BtConnectActivity.this, DialogType.INFO, true,
                             smartDevice.getDeviceName() + " 该设备不支持绑定", 1500);
@@ -154,7 +162,6 @@ public class BtConnectActivity extends BaseActivity {
                         .addAction("确定", new QMUIDialogAction.ActionListener() {
                             @Override
                             public void onClick(QMUIDialog dialog, int index) {
-                                //todo 保存本地
                                 UserAndDevice userAndDevice = oldUserAndDevice;
                                 if (oldUserAndDevice == null) {
                                     //该用户第一次绑定
@@ -180,6 +187,7 @@ public class BtConnectActivity extends BaseActivity {
 
     /**
      * 检查欲绑定设备是否是指定的设备
+     *
      * @param smartDevice
      * @return
      */

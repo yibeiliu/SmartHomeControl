@@ -127,7 +127,7 @@ public class WaterPurifierActivity extends BaseMqttActivity {
         llBluetooth = findViewById(R.id.llBluetooth);
         tvBluetoothText = llBluetooth.findViewById(R.id.tvContent);
         tbBluetoothButton = llBluetooth.findViewById(R.id.toggleButton);
-        tbBluetoothButton.setTag(FIlTER_TAG);
+        tbBluetoothButton.setTag(BLUETOOTH_TAG);
         tbBluetoothButton.setOnToggleClickListener(listener);
 
         llMaintain = findViewById(R.id.llMaintain);

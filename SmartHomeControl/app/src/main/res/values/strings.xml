@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">睿管家</string>
+
+    <string name="main_dialog_detail_device">设备名：%1$s \n
+        BLT蓝牙MAC地址：\n\t\t\t\t%2$s\n
+        WIFI MAC地址：\n\t\t\t\t%3$s</string>
 </resources>

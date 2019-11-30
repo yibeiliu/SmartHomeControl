@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".control.WaterPurifierActivity">
 
     <include
@@ -13,171 +14,170 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/water_purifier_guide_left"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        app:layout_constraintGuide_begin="16dp" />
+    <!--    <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/water_purifier_guide_left"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="16dp" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/water_purifier_guide_right"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        app:layout_constraintGuide_end="16dp" />
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/water_purifier_guide_right"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="16dp" />-->
 
     <include
         android:id="@+id/llPowerState"
         layout="@layout/item_state_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/water_purifier_toolbar" />
+        android:layout_height="wrap_content" />
 
-    <LinearLayout
-        android:id="@+id/water_purifier_control_ll"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:visibility="invisible"
-        app:layout_constraintEnd_toEndOf="@+id/water_purifier_guide_right"
-        app:layout_constraintHorizontal_weight="1"
-        app:layout_constraintStart_toStartOf="@+id/water_purifier_guide_left"
-        app:layout_constraintTop_toBottomOf="@+id/llPowerState"
-        tools:visibility="visible">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-        <View
-            android:layout_width="10000dp"
-            android:layout_height="1dp" />
-
-        <TextView
-            android:id="@+id/water_purifier_time_tv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:textSize="25sp"
-            android:textStyle="bold"
-            tools:text="23:23:23" />
-
-        <TextView
-            android:id="@+id/water_purifier_water_status_hint_tv"
+        <LinearLayout
+            android:id="@+id/water_purifier_control_ll"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="出水状态"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintHorizontal_weight="1"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/water_purifier_time_tv" />
+            android:orientation="vertical"
+            android:visibility="invisible"
+            tools:visibility="visible">
 
-        <com.sevenheaven.segmentcontrol.SegmentControl
-            android:id="@+id/water_purifier_water_status_sc"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="start"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="5dp"
-            android:textSize="18sp"
-            app:block_direction="horizon"
-            app:boundWidth="2dp"
-            app:cornerRadius="15dp"
-            app:horizonGap="10dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/water_purifier_water_status_hint_tv"
-            app:normalColor="#FFFFFF"
-            app:selectedColor="@color/lightskyblue"
-            app:separatorWidth="1dp"
-            app:texts="停 水|制 水"
-            app:verticalGap="10dp" />
+            <View
+                android:layout_width="10000dp"
+                android:layout_height="1dp" />
 
-        <TextView
-            android:id="@+id/water_purifier_heating_hint_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="保温加热"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintTop_toBottomOf="@+id/water_purifier_water_status_sc" />
+            <TextView
+                android:id="@+id/water_purifier_time_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textSize="25sp"
+                android:textStyle="bold"
+                tools:text="23:23:23" />
 
-        <com.sevenheaven.segmentcontrol.SegmentControl
-            android:id="@+id/water_purifier_heating_status_sc"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="start"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="5dp"
-            android:textSize="18sp"
-            app:block_direction="horizon"
-            app:boundWidth="2dp"
-            app:cornerRadius="15dp"
-            app:horizonGap="10dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/water_purifier_heating_hint_tv"
-            app:normalColor="#FFFFFF"
-            app:selectedColor="@color/lightskyblue"
-            app:separatorWidth="1dp"
-            app:texts="保 温|加 热"
-            app:verticalGap="10dp" />
+            <TextView
+                android:id="@+id/water_purifier_water_status_hint_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="出水状态"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/water_purifier_time_tv" />
 
-        <TextView
-            android:id="@+id/water_purifier_core_hint_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="滤芯"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+            <com.sevenheaven.segmentcontrol.SegmentControl
+                android:id="@+id/water_purifier_water_status_sc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
+                android:textSize="18sp"
+                app:block_direction="horizon"
+                app:boundWidth="2dp"
+                app:cornerRadius="15dp"
+                app:horizonGap="10dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/water_purifier_water_status_hint_tv"
+                app:normalColor="#FFFFFF"
+                app:selectedColor="@color/lightskyblue"
+                app:separatorWidth="1dp"
+                app:texts="停 水|制 水"
+                app:verticalGap="10dp" />
 
-        <include
-            android:id="@+id/llFilterCore"
-            layout="@layout/item_state_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            app:layout_constraintHorizontal_weight="1"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/water_purifier_heating_status_sc" />
+            <TextView
+                android:id="@+id/water_purifier_heating_hint_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="保温加热"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@+id/water_purifier_water_status_sc" />
 
-        <TextView
-            android:id="@+id/water_purifier_fix_hint_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="维护"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+            <com.sevenheaven.segmentcontrol.SegmentControl
+                android:id="@+id/water_purifier_heating_status_sc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
+                android:textSize="18sp"
+                app:block_direction="horizon"
+                app:boundWidth="2dp"
+                app:cornerRadius="15dp"
+                app:horizonGap="10dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/water_purifier_heating_hint_tv"
+                app:normalColor="#FFFFFF"
+                app:selectedColor="@color/lightskyblue"
+                app:separatorWidth="1dp"
+                app:texts="保 温|加 热"
+                app:verticalGap="10dp" />
 
-        <include
-            android:id="@+id/llMaintain"
-            layout="@layout/item_state_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_weight="1"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/llFilterCore" />
+            <TextView
+                android:id="@+id/water_purifier_core_hint_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="滤芯"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/water_purifier_bt_hint_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="蓝牙"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+            <include
+                android:id="@+id/llFilterCore"
+                layout="@layout/item_state_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/water_purifier_heating_status_sc" />
 
-        <include
-            android:id="@+id/llBluetooth"
-            layout="@layout/item_state_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_weight="1"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/llFilterCore" />
+            <TextView
+                android:id="@+id/water_purifier_fix_hint_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="维护"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
+            <include
+                android:id="@+id/llMaintain"
+                layout="@layout/item_state_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/llFilterCore" />
 
-    </LinearLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/water_purifier_bt_hint_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="蓝牙"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <include
+                android:id="@+id/llBluetooth"
+                layout="@layout/item_state_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/llFilterCore" />
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

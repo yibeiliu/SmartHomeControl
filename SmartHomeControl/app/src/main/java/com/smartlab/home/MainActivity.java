@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
+import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
 import com.smartlab.R;
 import com.smartlab.Utils.SharePre;
 import com.smartlab.Utils.StaticValues;
@@ -89,6 +90,37 @@ public class MainActivity extends BaseActivity {
                 }
             }
         });
+        homeRVAdapter.setOnItemLongClickListener(new BaseQuickAdapter.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(BaseQuickAdapter adapter, View view, int position) {
+                HomeMultiItem multiItem = (HomeMultiItem) adapter.getItem(position);
+                switch (adapter.getItemViewType(position)) {
+                    case HomeMultiItem.ADD_PAGE:
+                        return false;
+                    case HomeMultiItem.DEVICE:
+                        SmartDevice smartDevice = (SmartDevice) multiItem;
+                        showDetailPage(smartDevice);
+                        break;
+                    default:
+                        break;
+                }
+                return true;
+            }
+        });
+    }
+
+    private void showDetailPage(SmartDevice smartDevice) {
+        new QMUIDialog.MessageDialogBuilder(MainActivity.this)
+                .setTitle("设备 " + smartDevice.getDeviceName() + " 参数")
+                .setMessage(getResources().getString(R.string.main_dialog_detail_device,
+                        smartDevice.getDeviceName(), smartDevice.getDeviceMacAddress(), "mac123"))
+                .addAction("取消", new QMUIDialogAction.ActionListener() {
+                    @Override
+                    public void onClick(QMUIDialog dialog, int index) {
+                        dialog.dismiss();
+                    }
+                })
+                .create(com.qmuiteam.qmui.R.style.QMUI_Dialog).show();
     }
 
     private List<HomeMultiItem> getDatabaseDevicesList() {
@@ -99,9 +131,9 @@ public class MainActivity extends BaseActivity {
         } else {
             lists = new ArrayList<>();
         }
-        lists.add(new SmartDevice(StaticValues.WATER_PURIFIER, "mac1", R.mipmap.ic_launcher));
-        lists.add(new SmartDevice(StaticValues.HUMIDIFIER, "mac2", R.mipmap.ic_launcher));
-        lists.add(new SmartDevice(StaticValues.AIR_PURIFIER, "mac3", R.mipmap.ic_launcher));
+        lists.add(new SmartDevice(StaticValues.WATER_PURIFIER, "mac1", R.drawable.svg_water_purifier));
+        lists.add(new SmartDevice(StaticValues.HUMIDIFIER, "mac2", R.drawable.svg_humidifier));
+        lists.add(new SmartDevice(StaticValues.AIR_PURIFIER, "mac3", R.drawable.svg_air_purifier));
         //todo mock data for PENG
         lists.add(new AddPageItem());
         return lists;

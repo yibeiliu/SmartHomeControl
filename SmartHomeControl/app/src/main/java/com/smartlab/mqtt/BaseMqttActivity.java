@@ -56,6 +56,9 @@ public abstract class BaseMqttActivity extends BaseActivity {
         }
     };
 
+    /*
+    该 Handler 用于检测底层是否按时发时间戳，如果超过阈值，提示与设备断开连接
+     */
     @SuppressLint("HandlerLeak")
     private Handler timeOverTimeHandler = new Handler() {
         @Override
@@ -108,16 +111,17 @@ public abstract class BaseMqttActivity extends BaseActivity {
                     dismissDialog();
                 }
 
-                //判断 device 是否掉线
-                for (ProtocolDeviceStatus item : protocolData.getProtocolDeviceStatuses()) {
-                    if (isDeviceOpen && item.getProtocolType() == Constants.PROTOCOL_TYPE.TIME_STATE.value()) {
-                        timeOverTimeHandler.removeCallbacksAndMessages(null);
-                        Message timeMsg = Message.obtain();
-                        timeMsg.what = HANDLER_MSG_TIME_WAIT;
-                        timeOverTimeHandler.sendMessageDelayed(timeMsg, TIME_OVER_TIME_THRESHOLD);
-                        break;
-                    }
-                }
+                //根据底层发的时间戳判断 device 是否掉线
+//                for (ProtocolDeviceStatus item : protocolData.getProtocolDeviceStatuses()) {
+//                    //开机且收到时间戳
+//                    if (isDeviceOpen && item.getProtocolType() == Constants.PROTOCOL_TYPE.TIME_STATE.value()) {
+//                        timeOverTimeHandler.removeCallbacksAndMessages(null);
+//                        Message timeMsg = Message.obtain();
+//                        timeMsg.what = HANDLER_MSG_TIME_WAIT;
+//                        timeOverTimeHandler.sendMessageDelayed(timeMsg, TIME_OVER_TIME_THRESHOLD);
+//                        break;
+//                    }
+//                }
 
                 for (ProtocolDeviceStatus item : protocolData.getProtocolDeviceStatuses()) {
                     if (item.getProtocolType() == currentWaitMsgProtocolType) {
@@ -222,6 +226,8 @@ public abstract class BaseMqttActivity extends BaseActivity {
         mqttManager.unConnect();
         overTimeHandler.removeCallbacksAndMessages(null);
         overTimeHandler = null;
+        timeOverTimeHandler.removeCallbacksAndMessages(null);
+        timeOverTimeHandler = null;
     }
 
     protected abstract void notifySubscribeSuccess();
@@ -237,9 +243,13 @@ public abstract class BaseMqttActivity extends BaseActivity {
 
     protected void sendRequest(int requestType, int deviceType, int protocolType, int data) {
         currentWaitMsgProtocolType = protocolType;
-        Message msg = Message.obtain();
-        msg.what = HANDLER_MSG_WAIT;
-        overTimeHandler.sendMessageDelayed(msg, OVER_TIME_THRESHOLD);
+        if (protocolType != Constants.PROTOCOL_TYPE.BLUETOOTH.value()) {
+            Message msg = Message.obtain();
+            msg.what = HANDLER_MSG_WAIT;
+            overTimeHandler.sendMessageDelayed(msg, OVER_TIME_THRESHOLD);
+        } else {
+            overTimeHandler.removeCallbacksAndMessages(null);
+        }
         showDialog(this, DialogType.LOADING, true, "", -1);
         mqttManager.sendRequest(requestType, deviceType, protocolType, data);
     }
@@ -282,12 +292,6 @@ public abstract class BaseMqttActivity extends BaseActivity {
                         .create(com.qmuiteam.qmui.R.style.QMUI_Dialog).show();
             }
         });
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        timeOverTimeHandler.removeCallbacksAndMessages(null);
     }
 
     protected void setDeviceOpen(boolean isOpen) {

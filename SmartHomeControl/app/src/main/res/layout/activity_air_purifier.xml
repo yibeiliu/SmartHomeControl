@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/air_purifier_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".control.AirPurifierActivity">
 
     <include
@@ -14,19 +15,19 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/air_purifier_guide_left"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        app:layout_constraintGuide_begin="16dp" />
+    <!--<androidx.constraintlayout.widget.Guideline-->
+        <!--android:id="@+id/air_purifier_guide_left"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:orientation="vertical"-->
+        <!--app:layout_constraintGuide_begin="16dp" />-->
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/air_purifier_guide_right"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        app:layout_constraintGuide_end="16dp" />
+    <!--<androidx.constraintlayout.widget.Guideline-->
+        <!--android:id="@+id/air_purifier_guide_right"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:orientation="vertical"-->
+        <!--app:layout_constraintGuide_end="16dp" />-->
 
     <include
         android:id="@+id/llPowerState"
@@ -37,15 +38,14 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="@+id/air_purifier_guide_right"
-        app:layout_constraintStart_toStartOf="@+id/air_purifier_guide_left"
-        app:layout_constraintTop_toBottomOf="@+id/llPowerState">
+        android:focusableInTouchMode="true"
+        android:focusable="true"
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:id="@+id/air_purifier_control_ll"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical"
             android:visibility="invisible"
             tools:visibility="visible">
@@ -198,4 +198,4 @@
     </ScrollView>
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
