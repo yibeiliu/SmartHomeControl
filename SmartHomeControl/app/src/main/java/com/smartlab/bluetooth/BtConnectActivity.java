@@ -27,6 +27,7 @@ import com.smartlab.Utils.StaticValues;
 import com.smartlab.base.BaseActivity;
 import com.smartlab.data.SmartDevice;
 import com.smartlab.data.UserAndDevice;
+import com.smartlab.model.Constants;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -66,14 +67,27 @@ public class BtConnectActivity extends BaseActivity {
                 }
                 map.put(deviceName, deviceMacAddress);
                 int iconId = R.mipmap.ic_launcher;
+                String chineseName = "";
+                String wifiMacAddress = "";
+                String ipAddress = "";
                 if (StaticValues.AIR_PURIFIER.equals(deviceName)) {
+                    chineseName = Constants.ChineseName.AIR_CLEANER;
                     iconId = R.drawable.svg_air_purifier;
+                    wifiMacAddress = Constants.WifiMac.AIR_CLEANER_WIFI;
+                    ipAddress = Constants.IpAddress.AIR_CLEANER_IP;
                 } else if (StaticValues.HUMIDIFIER.equals(deviceName)) {
+                    chineseName = Constants.ChineseName.MOISTURIZER;
                     iconId = R.drawable.svg_humidifier;
+                    wifiMacAddress = Constants.WifiMac.MOISTURIZER_WIFI;
+                    ipAddress = Constants.IpAddress.MOISTURIZER_IP;
                 } else if (StaticValues.WATER_PURIFIER.equals(deviceName)) {
+                    chineseName = Constants.ChineseName.WATER_PURIFIER;
                     iconId = R.drawable.svg_water_purifier;
+                    wifiMacAddress = Constants.WifiMac.WATER_PURIFIER_WIFI;
+                    ipAddress = Constants.IpAddress.WATER_PURIFIER_IP;
                 }
-                SmartDevice smartDevice = new SmartDevice(deviceName, deviceMacAddress, iconId);
+                SmartDevice smartDevice = new SmartDevice(deviceName,
+                        deviceMacAddress, iconId, chineseName, wifiMacAddress, ipAddress);
                 addListAndNoticeRV(smartDevice);
             }
         }

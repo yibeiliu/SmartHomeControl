@@ -70,18 +70,20 @@ public class HumidifierActivity extends BaseMqttActivity {
             @Override
             public void onToggleClick(@Nullable View view) {
                 sendRequest(0, Constants.DEVICE_TYPE.MOISTURIZER.value(),
-                        Constants.PROTOCOL_TYPE.POWER_STATE.value(), tbPowerButton.isChecked() ? 0 : 1);
+                        Constants.PROTOCOL_TYPE.POWER_STATE.value(), tbPowerButton.isChecked() ? 1 : 0);
             }
         });
 
         llBluetooth = findViewById(R.id.llBluetooth);
         tvBluetoothText = llBluetooth.findViewById(R.id.tvContent);
+        tvBluetoothText.setText("蓝牙已开启");
         tbBluetoothButton = llBluetooth.findViewById(R.id.toggleButton);
+        tbBluetoothButton.setChecked(true);
         tbBluetoothButton.setOnToggleClickListener(new CXToggleButton.OnToggleClickListener() {
             @Override
             public void onToggleClick(@Nullable View view) {
                 sendRequest(0, Constants.DEVICE_TYPE.MOISTURIZER.value(),
-                        Constants.PROTOCOL_TYPE.BLUETOOTH.value(), tbBluetoothButton.isChecked() ? 0 : 1);
+                        Constants.PROTOCOL_TYPE.BLUETOOTH.value(), tbBluetoothButton.isChecked() ? 1 : 0);
             }
         });
     }

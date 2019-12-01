@@ -16,18 +16,18 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <!--<androidx.constraintlayout.widget.Guideline-->
-        <!--android:id="@+id/air_purifier_guide_left"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:orientation="vertical"-->
-        <!--app:layout_constraintGuide_begin="16dp" />-->
+    <!--android:id="@+id/air_purifier_guide_left"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:orientation="vertical"-->
+    <!--app:layout_constraintGuide_begin="16dp" />-->
 
     <!--<androidx.constraintlayout.widget.Guideline-->
-        <!--android:id="@+id/air_purifier_guide_right"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:orientation="vertical"-->
-        <!--app:layout_constraintGuide_end="16dp" />-->
+    <!--android:id="@+id/air_purifier_guide_right"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:orientation="vertical"-->
+    <!--app:layout_constraintGuide_end="16dp" />-->
 
     <include
         android:id="@+id/llPowerState"
@@ -38,9 +38,9 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:focusableInTouchMode="true"
+        android:layout_height="match_parent"
         android:focusable="true"
-        android:layout_height="match_parent">
+        android:focusableInTouchMode="true">
 
         <LinearLayout
             android:id="@+id/air_purifier_control_ll"
@@ -84,8 +84,10 @@
                 android:id="@+id/air_purifier_air_level_sc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
                 android:layout_gravity="center"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="10dp"
                 android:textSize="18sp"
                 app:block_direction="horizon"
                 app:boundWidth="2dp"
@@ -114,11 +116,11 @@
                 android:id="@+id/air_purifier_air_direction_sc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
                 android:layout_marginTop="5dp"
                 android:textSize="18sp"
                 app:block_direction="horizon"
                 app:boundWidth="2dp"
-                android:layout_marginStart="10dp"
                 app:cornerRadius="15dp"
                 app:horizonGap="10dp"
                 app:layout_constraintEnd_toEndOf="parent"

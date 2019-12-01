@@ -52,19 +52,19 @@ public class WaterPurifierActivity extends BaseMqttActivity {
             switch (tag) {
                 case POWER_TAG:
                     sendRequest(0, Constants.DEVICE_TYPE.WATER_PURIFIER.value(),
-                            Constants.PROTOCOL_TYPE.POWER_STATE.value(), tbPowerButton.isChecked() ? 0 : 1);
+                            Constants.PROTOCOL_TYPE.POWER_STATE.value(), tbPowerButton.isChecked() ? 1 : 0);
                     break;
                 case FIlTER_TAG:
                     sendRequest(0, Constants.DEVICE_TYPE.WATER_PURIFIER.value(),
-                            Constants.PROTOCOL_TYPE.FILTER_CORE.value(), tbFilterButton.isChecked() ? 0 : 1);
+                            Constants.PROTOCOL_TYPE.FILTER_CORE.value(), tbFilterButton.isChecked() ? 1 : 0);
                     break;
                 case MAINTAIN_TAG:
                     sendRequest(0, Constants.DEVICE_TYPE.WATER_PURIFIER.value(),
-                            Constants.PROTOCOL_TYPE.MAINTAINENCE.value(), tbMaintainButton.isChecked() ? 0 : 1);
+                            Constants.PROTOCOL_TYPE.MAINTAINENCE.value(), tbMaintainButton.isChecked() ? 1 : 0);
                     break;
                 case BLUETOOTH_TAG:
                     sendRequest(0, Constants.DEVICE_TYPE.WATER_PURIFIER.value(),
-                            Constants.PROTOCOL_TYPE.BLUETOOTH.value(), tbBluetoothButton.isChecked() ? 0 : 1);
+                            Constants.PROTOCOL_TYPE.BLUETOOTH.value(), tbBluetoothButton.isChecked() ? 1 : 0);
                     break;
             }
         }
@@ -126,7 +126,9 @@ public class WaterPurifierActivity extends BaseMqttActivity {
 
         llBluetooth = findViewById(R.id.llBluetooth);
         tvBluetoothText = llBluetooth.findViewById(R.id.tvContent);
+        tvBluetoothText.setText("蓝牙已开启");
         tbBluetoothButton = llBluetooth.findViewById(R.id.toggleButton);
+        tbBluetoothButton.setChecked(true);
         tbBluetoothButton.setTag(BLUETOOTH_TAG);
         tbBluetoothButton.setOnToggleClickListener(listener);
 
@@ -241,10 +243,10 @@ public class WaterPurifierActivity extends BaseMqttActivity {
         } else if (currentWaitMsgProtocolType == Constants.PROTOCOL_TYPE.FILTER_CORE.value()) {
             int currentFilterCoreStatus = currentDeviceStatusMap.get(Constants.PROTOCOL_TYPE.FILTER_CORE.value());
             if (currentFilterCoreStatus == 1) {
-                tvFilterText.setText("滤芯维护中...");
+                tvFilterText.setText("滤芯自清洁开");
                 tbFilterButton.setToggleButtonState(true);
             } else {
-                tvFilterText.setText("滤芯不在维护中");
+                tvFilterText.setText("滤芯自清洁关");
                 tbFilterButton.setToggleButtonState(false);
             }
         } else if (currentWaitMsgProtocolType == Constants.PROTOCOL_TYPE.MAINTAINENCE.value()) {
@@ -253,7 +255,7 @@ public class WaterPurifierActivity extends BaseMqttActivity {
                 tvMaintainText.setText("维护中...");
                 tbMaintainButton.setToggleButtonState(true);
             } else {
-                tvMaintainText.setText("维护停止中");
+                tvMaintainText.setText("维护已完成");
                 tbMaintainButton.setToggleButtonState(false);
             }
         } else if (currentWaitMsgProtocolType == Constants.PROTOCOL_TYPE.BLUETOOTH.value()) {

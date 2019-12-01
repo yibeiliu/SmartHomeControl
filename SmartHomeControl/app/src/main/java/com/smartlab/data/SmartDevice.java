@@ -7,15 +7,23 @@ import androidx.annotation.Nullable;
  * @Date 11/4/2019 1:59 PM
  */
 public class SmartDevice extends HomeMultiItem {
-    public SmartDevice(String deviceName, String deviceMacAddress, int icon) {
+
+    public SmartDevice(String deviceName, String deviceMacAddress,
+                       int icon, String deviceChineseName, String deviceWifiMacAddress, String ipAddress) {
         this.deviceName = deviceName;
         this.deviceMacAddress = deviceMacAddress;
         this.icon = icon;
+        this.deviceChineseName = deviceChineseName;
+        this.deviceWifiMacAddress = deviceWifiMacAddress;
+        this.ipAddress = ipAddress;
     }
 
     private String deviceName;
     private String deviceMacAddress;
     private int icon;
+    private String deviceChineseName;
+    private String deviceWifiMacAddress;
+    private String ipAddress;
 
     public String getDeviceName() {
         return deviceName;
@@ -44,6 +52,30 @@ public class SmartDevice extends HomeMultiItem {
     @Override
     public int getItemType() {
         return HomeMultiItem.DEVICE;
+    }
+
+    public String getDeviceChineseName() {
+        return deviceChineseName;
+    }
+
+    public void setDeviceChineseName(String deviceChineseName) {
+        this.deviceChineseName = deviceChineseName;
+    }
+
+    public String getDeviceWifiMacAddress() {
+        return deviceWifiMacAddress;
+    }
+
+    public void setDeviceWifiMacAddress(String deviceWifiMacAddress) {
+        this.deviceWifiMacAddress = deviceWifiMacAddress;
+    }
+
+    public String getIpAddress() {
+        return ipAddress;
+    }
+
+    public void setIpAddress(String ipAddress) {
+        this.ipAddress = ipAddress;
     }
 
     @Override

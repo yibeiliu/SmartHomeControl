@@ -34,7 +34,6 @@ public class MqttManager {
     }
 
     private MqttManager(Context context) {
-        this.mqttAndroidClient = new MqttAndroidClient(context, Config.serverUri, Config.clientId);
         this.context = context;
     }
 
@@ -52,10 +51,12 @@ public class MqttManager {
 
     public void unConnect() {
         mqttAndroidClient.unregisterResources();
+        mqttAndroidClient = null;
     }
 
     public void connect(final OnMqttActionListener listener) {
         this.listener = listener;
+        mqttAndroidClient = new MqttAndroidClient(context, Config.serverUri, Config.clientId);
         mqttAndroidClient.setCallback(new MqttCallback() {
             @Override
             public void connectionLost(Throwable cause) {
@@ -156,7 +157,6 @@ public class MqttManager {
                 public void onSuccess(IMqttToken asyncActionToken) {
                     Log.e(TAG, "publishMessage onSuccess");
                     listener.onPublishSuccess();
-
                 }
 
                 @Override
@@ -172,6 +172,7 @@ public class MqttManager {
 
     public void sendRequest(int requestType, int deviceType, int protocolType, int data) {
         String request = buildRequest(requestType, deviceType, protocolType, data);
+        Log.d("lpy", "[sendRequest] " + request);
         mqttManager.publishMessage(request);
     }
 

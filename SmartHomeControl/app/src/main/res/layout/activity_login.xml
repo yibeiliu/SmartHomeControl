@@ -109,7 +109,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:text="找回密码"
-        android:textColor="@color/colorAccent"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="@+id/login_password_et"
         app:layout_constraintTop_toBottomOf="@+id/login_password_et" />
@@ -119,7 +118,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:text="注册新用户"
+        android:text="注册"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="@+id/login_password_et"
         app:layout_constraintTop_toBottomOf="@+id/login_password_et" />

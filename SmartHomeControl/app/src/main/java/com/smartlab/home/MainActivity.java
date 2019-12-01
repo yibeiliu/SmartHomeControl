@@ -25,6 +25,7 @@ import com.smartlab.data.AddPageItem;
 import com.smartlab.data.HomeMultiItem;
 import com.smartlab.data.SmartDevice;
 import com.smartlab.data.UserAndDevice;
+import com.smartlab.model.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -111,9 +112,10 @@ public class MainActivity extends BaseActivity {
 
     private void showDetailPage(SmartDevice smartDevice) {
         new QMUIDialog.MessageDialogBuilder(MainActivity.this)
-                .setTitle("设备 " + smartDevice.getDeviceName() + " 参数")
+                .setTitle(smartDevice.getDeviceChineseName())
                 .setMessage(getResources().getString(R.string.main_dialog_detail_device,
-                        smartDevice.getDeviceName(), smartDevice.getDeviceMacAddress(), "mac123"))
+                        smartDevice.getDeviceChineseName() + "01", smartDevice.getDeviceMacAddress(),
+                        smartDevice.getDeviceWifiMacAddress(), smartDevice.getIpAddress()))
                 .addAction("取消", new QMUIDialogAction.ActionListener() {
                     @Override
                     public void onClick(QMUIDialog dialog, int index) {
@@ -131,9 +133,15 @@ public class MainActivity extends BaseActivity {
         } else {
             lists = new ArrayList<>();
         }
-        lists.add(new SmartDevice(StaticValues.WATER_PURIFIER, "mac1", R.drawable.svg_water_purifier));
-        lists.add(new SmartDevice(StaticValues.HUMIDIFIER, "mac2", R.drawable.svg_humidifier));
-        lists.add(new SmartDevice(StaticValues.AIR_PURIFIER, "mac3", R.drawable.svg_air_purifier));
+//        lists.add(new SmartDevice(StaticValues.WATER_PURIFIER, "mac1",
+//                R.drawable.svg_water_purifier, Constants.ChineseName.WATER_PURIFIER,
+//                Constants.WifiMac.WATER_PURIFIER_WIFI, Constants.IpAddress.WATER_PURIFIER_IP));
+        lists.add(new SmartDevice(StaticValues.HUMIDIFIER, "mac2",
+                R.drawable.svg_humidifier, Constants.ChineseName.MOISTURIZER,
+                Constants.WifiMac.MOISTURIZER_WIFI, Constants.IpAddress.MOISTURIZER_IP));
+//        lists.add(new SmartDevice(StaticValues.AIR_PURIFIER, "mac3",
+//                R.drawable.svg_air_purifier, Constants.ChineseName.AIR_CLEANER,
+//                Constants.WifiMac.AIR_CLEANER_WIFI, Constants.IpAddress.AIR_CLEANER_IP));
         //todo mock data for PENG
         lists.add(new AddPageItem());
         return lists;

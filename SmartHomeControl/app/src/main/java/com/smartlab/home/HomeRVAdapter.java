@@ -28,7 +28,7 @@ public class HomeRVAdapter extends BaseMultiItemQuickAdapter<HomeMultiItem, Base
         switch (baseViewHolder.getItemViewType()) {
             case HomeMultiItem.DEVICE:
                 SmartDevice smartDevice = ((SmartDevice)homeMultiItem);
-                baseViewHolder.setText(R.id.item_homerv_device_name, smartDevice.getDeviceName());
+                baseViewHolder.setText(R.id.item_homerv_device_name, smartDevice.getDeviceChineseName());
                 baseViewHolder.setImageResource(R.id.item_homerv_device_icon, smartDevice.getIcon());
                 break;
             case HomeMultiItem.ADD_PAGE:

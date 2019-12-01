@@ -112,16 +112,16 @@ public abstract class BaseMqttActivity extends BaseActivity {
                 }
 
                 //根据底层发的时间戳判断 device 是否掉线
-//                for (ProtocolDeviceStatus item : protocolData.getProtocolDeviceStatuses()) {
-//                    //开机且收到时间戳
-//                    if (isDeviceOpen && item.getProtocolType() == Constants.PROTOCOL_TYPE.TIME_STATE.value()) {
-//                        timeOverTimeHandler.removeCallbacksAndMessages(null);
-//                        Message timeMsg = Message.obtain();
-//                        timeMsg.what = HANDLER_MSG_TIME_WAIT;
-//                        timeOverTimeHandler.sendMessageDelayed(timeMsg, TIME_OVER_TIME_THRESHOLD);
-//                        break;
-//                    }
-//                }
+                for (ProtocolDeviceStatus item : protocolData.getProtocolDeviceStatuses()) {
+                    //开机且收到时间戳
+                    if (isDeviceOpen && item.getProtocolType() == Constants.PROTOCOL_TYPE.TIME_STATE.value()) {
+                        timeOverTimeHandler.removeCallbacksAndMessages(null);
+                        Message timeMsg = Message.obtain();
+                        timeMsg.what = HANDLER_MSG_TIME_WAIT;
+                        timeOverTimeHandler.sendMessageDelayed(timeMsg, TIME_OVER_TIME_THRESHOLD);
+                        break;
+                    }
+                }
 
                 for (ProtocolDeviceStatus item : protocolData.getProtocolDeviceStatuses()) {
                     if (item.getProtocolType() == currentWaitMsgProtocolType) {
@@ -196,6 +196,7 @@ public abstract class BaseMqttActivity extends BaseActivity {
                     @Override
                     public void onClick(QMUIDialog dialog, int index) {
                         dialog.dismiss();
+                        mqttManager.unConnect();
                         mqttManager.connect(mqttActionListener);
                         sendRequest(1, currentDeviceType(),
                                 Constants.PROTOCOL_TYPE.WHOLSE_STATE_INQUIRY.value(), 1);
@@ -260,11 +261,11 @@ public abstract class BaseMqttActivity extends BaseActivity {
         setSupportActionBar(toolbar);
         TextView title = findViewById(R.id.toolbar_title_tv);
         if (currentDeviceType() == Constants.DEVICE_TYPE.AIR_CLEANER.value()) {
-            title.setText("空气净化器");
+            title.setText(Constants.ChineseName.AIR_CLEANER);
         } else if (currentDeviceType() == Constants.DEVICE_TYPE.WATER_PURIFIER.value()) {
-            title.setText("净水器");
+            title.setText(Constants.ChineseName.WATER_PURIFIER);
         } else {
-            title.setText("空气杀菌器");
+            title.setText(Constants.ChineseName.MOISTURIZER);
         }
         ImageButton shareIconBtn = findViewById(R.id.toolbar_menu_ib);
         shareIconBtn.setImageResource(R.drawable.ic_share);
