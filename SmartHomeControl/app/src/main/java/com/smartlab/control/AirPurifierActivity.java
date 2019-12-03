@@ -180,10 +180,10 @@ public class AirPurifierActivity extends BaseMqttActivity {
             } else if (item.getProtocolType() == Constants.PROTOCOL_TYPE.FILTER_CORE.value()) {
                 currentDeviceStatusMap.put(Constants.PROTOCOL_TYPE.FILTER_CORE.value(), Integer.parseInt(item.getProtocolContent()));
                 if (Integer.parseInt(item.getProtocolContent()) == 1) {
-                    tvFilterText.setText("滤芯维护中...");
+                    tvFilterText.setText("滤芯自清洁开");
                     tbFilterButton.setToggleButtonState(true);
                 } else {
-                    tvFilterText.setText("滤芯不在维护中");
+                    tvFilterText.setText("滤芯自清洁关");
                     tbFilterButton.setToggleButtonState(false);
                 }
             } else if (item.getProtocolType() == Constants.PROTOCOL_TYPE.MAINTAINENCE.value()) {
@@ -192,7 +192,7 @@ public class AirPurifierActivity extends BaseMqttActivity {
                     tvMaintainText.setText("维护中...");
                     tbMaintainButton.setToggleButtonState(true);
                 } else {
-                    tvMaintainText.setText("维护停止中");
+                    tvMaintainText.setText("维护已完成");
                     tbMaintainButton.setToggleButtonState(false);
                 }
             } else if (item.getProtocolType() == Constants.PROTOCOL_TYPE.BLUETOOTH.value()) {

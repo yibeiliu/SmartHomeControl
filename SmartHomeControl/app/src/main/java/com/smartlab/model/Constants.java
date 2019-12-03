@@ -74,4 +74,8 @@ public class Constants {
             return value;
         }
     }
+
+    public class QRCode {
+        public static final String COLON = ":";
+    }
 }

@@ -36,6 +36,7 @@ public class LoginActivity extends BaseActivity {
         initView();
         initData();
         rxPermissions.request(Manifest.permission.BLUETOOTH, Manifest.permission.BLUETOOTH_ADMIN,
+                Manifest.permission.CAMERA, Manifest.permission.VIBRATE,
                 Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
                 .subscribe(new Consumer<Boolean>() {
                     @Override

@@ -11,8 +11,10 @@ import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -22,6 +24,7 @@ import com.qmuiteam.qmui.widget.QMUIEmptyView;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
 import com.smartlab.R;
+import com.smartlab.Utils.DeviceUtils;
 import com.smartlab.Utils.SharePre;
 import com.smartlab.Utils.StaticValues;
 import com.smartlab.base.BaseActivity;
@@ -109,7 +112,7 @@ public class BtConnectActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bt_connect);
         initView();
-
+        configureToolbar();
         // Register for broadcasts when a device is discovered.
         IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
         registerReceiver(receiver, filter);
@@ -145,7 +148,7 @@ public class BtConnectActivity extends BaseActivity {
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 final SmartDevice smartDevice = (SmartDevice) adapter.getItem(position);
                 assert smartDevice != null;
-                if (!isDeviceInThreeList(smartDevice)) {
+                if (!DeviceUtils.isDeviceInThreeList(smartDevice)) {
                     //提示不支持当前设备
                     showDialog(BtConnectActivity.this, DialogType.INFO, true,
                             smartDevice.getDeviceName() + " 该设备不支持绑定", 1500);
@@ -199,18 +202,6 @@ public class BtConnectActivity extends BaseActivity {
         recyclerView.setAdapter(recyclerviewAdapter);
     }
 
-    /**
-     * 检查欲绑定设备是否是指定的设备
-     *
-     * @param smartDevice
-     * @return
-     */
-    private boolean isDeviceInThreeList(SmartDevice smartDevice) {
-        return StaticValues.AIR_PURIFIER.equals(smartDevice.getDeviceName())
-                || StaticValues.HUMIDIFIER.equals(smartDevice.getDeviceName())
-                || StaticValues.WATER_PURIFIER.equals(smartDevice.getDeviceName());
-    }
-
     private void startBtScan() {
         assert bluetoothAdapter != null;
         if (bluetoothAdapter.isDiscovering()) {
@@ -248,6 +239,13 @@ public class BtConnectActivity extends BaseActivity {
                     }
                 })
                 .create(com.qmuiteam.qmui.R.style.QMUI_Dialog).show();
+    }
+
+    private void configureToolbar() {
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        TextView title = findViewById(R.id.toolbar_title_tv);
+        title.setText("设备添加");
     }
 
     @Override
