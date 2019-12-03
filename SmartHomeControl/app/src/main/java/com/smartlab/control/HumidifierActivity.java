@@ -76,9 +76,7 @@ public class HumidifierActivity extends BaseMqttActivity {
 
         llBluetooth = findViewById(R.id.llBluetooth);
         tvBluetoothText = llBluetooth.findViewById(R.id.tvContent);
-        tvBluetoothText.setText("蓝牙已开启");
         tbBluetoothButton = llBluetooth.findViewById(R.id.toggleButton);
-        tbBluetoothButton.setChecked(true);
         tbBluetoothButton.setOnToggleClickListener(new CXToggleButton.OnToggleClickListener() {
             @Override
             public void onToggleClick(@Nullable View view) {

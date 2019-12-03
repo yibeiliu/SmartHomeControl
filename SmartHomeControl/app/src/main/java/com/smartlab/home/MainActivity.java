@@ -29,7 +29,6 @@ import com.smartlab.data.HomeMultiItem;
 import com.smartlab.data.SmartDevice;
 import com.smartlab.data.UserAndDevice;
 import com.smartlab.model.Constants;
-import com.uuzuche.lib_zxing.activity.CaptureActivity;
 import com.uuzuche.lib_zxing.activity.CodeUtils;
 
 import java.util.ArrayList;
@@ -58,7 +57,7 @@ public class MainActivity extends BaseActivity {
                 HomeMultiItem multiItem = (HomeMultiItem) adapter.getItem(position);
                 switch (adapter.getItemViewType(position)) {
                     case HomeMultiItem.ADD_PAGE:
-                        final String[] items = new String[]{"通过蓝牙添加", "扫描二维码添加"};
+                        final String[] items = new String[]{"通过蓝牙添加", /*"扫描二维码添加"*/};
                         new QMUIDialog.MenuDialogBuilder(view.getContext())
                                 .addItems(items, new DialogInterface.OnClickListener() {
                                     @Override
@@ -70,11 +69,11 @@ public class MainActivity extends BaseActivity {
                                                 Intent intent1 = new Intent(MainActivity.this, BtConnectActivity.class);
                                                 startActivity(intent1);
                                                 break;
-                                            case 1:
+                                            /*case 1:
                                                 //go to QR code activity
                                                 Intent intent2 = new Intent(MainActivity.this, CaptureActivity.class);
                                                 startActivityForResult(intent2, REQUEST_CODE);
-                                                break;
+                                                break;*/
                                             default:
                                                 break;
                                         }
