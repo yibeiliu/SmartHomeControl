@@ -76,6 +76,6 @@ public class Constants {
     }
 
     public class QRCode {
-        public static final String COLON = ":";
+        public static final String COMMA = ",";
     }
 }

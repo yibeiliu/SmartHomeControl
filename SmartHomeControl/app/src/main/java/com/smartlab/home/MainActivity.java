@@ -3,10 +3,17 @@ package com.smartlab.home;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.TextUtils;
+import android.text.method.LinkMovementMethod;
+import android.text.method.MovementMethod;
+import android.text.style.ClickableSpan;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -29,8 +36,11 @@ import com.smartlab.data.HomeMultiItem;
 import com.smartlab.data.SmartDevice;
 import com.smartlab.data.UserAndDevice;
 import com.smartlab.model.Constants;
+import com.uuzuche.lib_zxing.activity.CaptureActivity;
 import com.uuzuche.lib_zxing.activity.CodeUtils;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -57,7 +67,7 @@ public class MainActivity extends BaseActivity {
                 HomeMultiItem multiItem = (HomeMultiItem) adapter.getItem(position);
                 switch (adapter.getItemViewType(position)) {
                     case HomeMultiItem.ADD_PAGE:
-                        final String[] items = new String[]{"通过蓝牙添加", /*"扫描二维码添加"*/};
+                        final String[] items = new String[]{"通过蓝牙添加", "扫描二维码添加"};
                         new QMUIDialog.MenuDialogBuilder(view.getContext())
                                 .addItems(items, new DialogInterface.OnClickListener() {
                                     @Override
@@ -69,11 +79,11 @@ public class MainActivity extends BaseActivity {
                                                 Intent intent1 = new Intent(MainActivity.this, BtConnectActivity.class);
                                                 startActivity(intent1);
                                                 break;
-                                            /*case 1:
+                                            case 1:
                                                 //go to QR code activity
                                                 Intent intent2 = new Intent(MainActivity.this, CaptureActivity.class);
                                                 startActivityForResult(intent2, REQUEST_CODE);
-                                                break;*/
+                                                break;
                                             default:
                                                 break;
                                         }
@@ -118,19 +128,48 @@ public class MainActivity extends BaseActivity {
         });
     }
 
-    private void showDetailPage(SmartDevice smartDevice) {
-        new QMUIDialog.MessageDialogBuilder(MainActivity.this)
+    private void showDetailPage(final SmartDevice smartDevice) {
+        String showText = getResources().getString(R.string.main_dialog_detail_device,
+                smartDevice.getDeviceChineseName() + " 01", smartDevice.getDeviceMacAddress(),
+                smartDevice.getDeviceWifiMacAddress(), smartDevice.getIpAddress());
+        SpannableString spannableString = new SpannableString(showText);
+        ClickableSpan clickableSpan = new ClickableSpan() {
+            @Override
+            public void onClick(@NonNull View widget) {
+                //todo show page
+                Intent intent = new Intent(MainActivity.this, QrCodeActivity.class);
+                intent.putExtra(StaticValues.Key.KEY_QRCODE_SHOW, smartDevice);
+                startActivity(intent);
+            }
+        };
+        spannableString.setSpan(clickableSpan, showText.length() - 4, showText.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        QMUIDialog.MessageDialogBuilder builder = new QMUIDialog.MessageDialogBuilder(MainActivity.this)
                 .setTitle(smartDevice.getDeviceChineseName())
-                .setMessage(getResources().getString(R.string.main_dialog_detail_device,
-                        smartDevice.getDeviceChineseName() + " 01", smartDevice.getDeviceMacAddress(),
-                        smartDevice.getDeviceWifiMacAddress(), smartDevice.getIpAddress()))
+                .setMessage(spannableString)
                 .addAction("取消", new QMUIDialogAction.ActionListener() {
                     @Override
                     public void onClick(QMUIDialog dialog, int index) {
                         dialog.dismiss();
                     }
-                })
-                .create(com.qmuiteam.qmui.R.style.QMUI_Dialog).show();
+                });
+        builder.create(com.qmuiteam.qmui.R.style.QMUI_Dialog);
+        builder.show();
+
+        try {
+            Class<?> bookClass = Class.forName("com.qmuiteam.qmui.widget.dialog.QMUIDialog$MessageDialogBuilder");//完整类名
+            Field field = bookClass.getDeclaredField("mTextView");
+            field.setAccessible(true);
+            Object object = field.get(builder);
+
+            Class<?> textViewClass = Class.forName("android.widget.TextView");
+            Method movementMethod = textViewClass.getDeclaredMethod("setMovementMethod", MovementMethod.class);
+            movementMethod.setAccessible(true);
+            movementMethod.invoke(object, LinkMovementMethod.getInstance());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private List<HomeMultiItem> getDatabaseDevicesList() {
@@ -183,14 +222,18 @@ public class MainActivity extends BaseActivity {
                 if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_SUCCESS) {
                     String result = bundle.getString(CodeUtils.RESULT_STRING);
                     Toast.makeText(this, "解析结果:" + result, Toast.LENGTH_LONG).show();
-                    String[] resultArray = result.split(Constants.QRCode.COLON);
+                    if (TextUtils.isEmpty(result) || !result.startsWith("DD")) {
+                        showDialog(MainActivity.this, DialogType.INFO, true, "无效的二维码", 1500);
+                    }
+                    String[] resultArray = result.split(Constants.QRCode.COMMA);
                     String btName = resultArray[0];
-                    String btMacAddress = resultArray[1];
+                    String deviceID = resultArray[1];
                     String wifiMacAddress = resultArray[2];
+                    String btMacAddress = resultArray[3];
 
-                    int iconId = R.mipmap.ic_launcher;
-                    String chineseName = "";
-                    String ipAddress = "";
+                    int iconId;
+                    String chineseName;
+                    String ipAddress;
                     if (StaticValues.AIR_PURIFIER.equals(btName)) {
                         chineseName = Constants.ChineseName.AIR_CLEANER;
                         iconId = R.drawable.svg_air_purifier;
@@ -203,6 +246,8 @@ public class MainActivity extends BaseActivity {
                         chineseName = Constants.ChineseName.WATER_PURIFIER;
                         iconId = R.drawable.svg_water_purifier;
                         ipAddress = Constants.IpAddress.WATER_PURIFIER_IP;
+                    } else {
+                        throw new IllegalStateException("The QR code is wrong!");
                     }
                     SmartDevice smartDevice = new SmartDevice(btName,
                             btMacAddress, iconId, chineseName, wifiMacAddress, ipAddress);
@@ -259,6 +304,7 @@ public class MainActivity extends BaseActivity {
                         }
                         SharePre.setUserAndDevice(MainActivity.this, userAndDevice);
                         Toast.makeText(MainActivity.this, "绑定成功", Toast.LENGTH_SHORT).show();
+                        homeRVAdapter.setNewData(getDatabaseDevicesList());
                         dialog.dismiss();
                     }
                 })

@@ -11,11 +11,9 @@
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.CAMERA"/>
-    <uses-permission android:name="android.permission.VIBRATE"/>
-    <uses-permission android:name="android.permission.FLASHLIGHT"/>
-
-
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.FLASHLIGHT" />
 
     <application
         android:name=".MainApplication"
@@ -26,13 +24,14 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".home.QrCodeActivity" />
         <activity android:name=".control.AirPurifierActivity" />
         <activity android:name=".control.HumidifierActivity" />
         <activity android:name=".control.WaterPurifierActivity" />
         <activity android:name=".login.RefindPwdActivity" />
         <activity android:name=".bluetooth.BtConnectActivity" />
         <activity android:name=".bluetooth.BtTestActivity" />
-        <activity android:name=".mqtt.TestMqttActivity"/>
+        <activity android:name=".mqtt.TestMqttActivity" />
         <activity android:name=".bluetooth.BTConnectActivity1" />
         <activity android:name=".base.BaseActivity" />
         <activity android:name=".login.LoginActivity">
@@ -48,11 +47,11 @@
         <service android:name="org.eclipse.paho.android.service.MqttService" />
 
         <activity
-        android:name=".wxapi.WXEntryActivity"
-        android:exported="true"
-        android:launchMode="singleTop"
-        android:screenOrientation="portrait"
-        android:theme="@style/NoTitleTranslucent80Theme"/>
+            android:name=".wxapi.WXEntryActivity"
+            android:exported="true"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoTitleTranslucent80Theme" />
     </application>
 
 </manifest>

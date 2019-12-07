@@ -2,11 +2,13 @@ package com.smartlab.data;
 
 import androidx.annotation.Nullable;
 
+import java.io.Serializable;
+
 /**
  * @Author peiyi.liu
  * @Date 11/4/2019 1:59 PM
  */
-public class SmartDevice extends HomeMultiItem {
+public class SmartDevice extends HomeMultiItem implements Serializable {
 
     public SmartDevice(String deviceName, String deviceMacAddress,
                        int icon, String deviceChineseName, String deviceWifiMacAddress, String ipAddress) {

@@ -34,6 +34,7 @@ public abstract class BaseMqttActivity extends BaseActivity {
     private int currentWaitMsgProtocolType = -1;
     private boolean isShowLinkingDialog = false;
     private boolean isDeviceOpen = false;
+    private QMUIDialog overTimeDialog;
 
     @SuppressLint("UseSparseArrays")
     protected Map<Integer, Integer> currentDeviceStatusMap = new HashMap<>();
@@ -115,6 +116,9 @@ public abstract class BaseMqttActivity extends BaseActivity {
                 for (ProtocolDeviceStatus item : protocolData.getProtocolDeviceStatuses()) {
                     //开机且收到时间戳
                     if (isDeviceOpen && item.getProtocolType() == Constants.PROTOCOL_TYPE.TIME_STATE.value()) {
+                        if (overTimeDialog.isShowing()) {
+                            overTimeDialog.dismiss();
+                        }
                         timeOverTimeHandler.removeCallbacksAndMessages(null);
                         Message timeMsg = Message.obtain();
                         timeMsg.what = HANDLER_MSG_TIME_WAIT;
@@ -206,7 +210,7 @@ public abstract class BaseMqttActivity extends BaseActivity {
     }
 
     private void showDeviceQuitDialog() {
-        new QMUIDialog.MessageDialogBuilder(this)
+        overTimeDialog = new QMUIDialog.MessageDialogBuilder(this)
                 .setTitle("掉线")
                 .setMessage("与设备连接断开")
                 .addAction(0, "退出", QMUIDialogAction.ACTION_PROP_NEGATIVE, new QMUIDialogAction.ActionListener() {
@@ -218,7 +222,8 @@ public abstract class BaseMqttActivity extends BaseActivity {
                 })
                 .setCancelable(false)
                 .setCanceledOnTouchOutside(false)
-                .create(com.qmuiteam.qmui.R.style.QMUI_Dialog).show();
+                .create(com.qmuiteam.qmui.R.style.QMUI_Dialog);
+        overTimeDialog.show();
     }
 
     @Override
