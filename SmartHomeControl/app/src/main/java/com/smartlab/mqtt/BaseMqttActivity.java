@@ -76,6 +76,19 @@ public abstract class BaseMqttActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         configureToolbar();
         isShowLinkingDialog = true;
+        overTimeDialog = new QMUIDialog.MessageDialogBuilder(this)
+                .setTitle("掉线")
+                .setMessage("与设备连接断开")
+                .addAction(0, "退出", QMUIDialogAction.ACTION_PROP_NEGATIVE, new QMUIDialogAction.ActionListener() {
+                    @Override
+                    public void onClick(QMUIDialog dialog, int index) {
+                        dialog.dismiss();
+                        finish();
+                    }
+                })
+                .setCancelable(false)
+                .setCanceledOnTouchOutside(false)
+                .create(com.qmuiteam.qmui.R.style.QMUI_Dialog);
         showDialog(this, DialogType.LOADING, true, "设备连接中，请稍等", -1);
         mqttActionListener = new MqttManager.OnMqttActionListener() {
             @Override
@@ -210,19 +223,6 @@ public abstract class BaseMqttActivity extends BaseActivity {
     }
 
     private void showDeviceQuitDialog() {
-        overTimeDialog = new QMUIDialog.MessageDialogBuilder(this)
-                .setTitle("掉线")
-                .setMessage("与设备连接断开")
-                .addAction(0, "退出", QMUIDialogAction.ACTION_PROP_NEGATIVE, new QMUIDialogAction.ActionListener() {
-                    @Override
-                    public void onClick(QMUIDialog dialog, int index) {
-                        dialog.dismiss();
-                        finish();
-                    }
-                })
-                .setCancelable(false)
-                .setCanceledOnTouchOutside(false)
-                .create(com.qmuiteam.qmui.R.style.QMUI_Dialog);
         overTimeDialog.show();
     }
 
